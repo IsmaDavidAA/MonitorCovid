@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,6 +30,7 @@ public class RegistrarRegistroGUI extends JDialog {
     private DefaultComboBoxModel combo;
     private SimpleDateFormat formatter;
     public RegistrarRegistroGUI(Sintomas sintomas) {
+        this.setDefaultCloseOperation(2);
         this.setLocation(200, 50);
         formatter = new SimpleDateFormat("dd-MM-yyyy-hh:mm");
         this.setPreferredSize(new Dimension(410, 600));
@@ -47,6 +49,7 @@ public class RegistrarRegistroGUI extends JDialog {
 
     }
 
+
     public void cargarComponentes(){
         addRegistroPanel = new JPanel();
         showRegistrosPanel = new JPanel();
@@ -56,7 +59,6 @@ public class RegistrarRegistroGUI extends JDialog {
         addRegistroButton = new JButton("Agregar registro");
         sintomasTable.setBounds(5,5, 400, 400);
         tablePanel.add(sintomasTable);
-
         cargarCheckBox();
         addRegistroPanel.add(new JLabel("Fecha:"));
         addRegistroPanel.add(new JLabel(new SimpleDateFormat("dd-MM-yyyy").format(fechaHoy.getTime()) +"..."));
@@ -75,11 +77,11 @@ public class RegistrarRegistroGUI extends JDialog {
         eventoOyenteAgregarSintoma();
         eventoOyenteShowRegistro();
     }
-
     public void eventoOyenteShowRegistro() {
         ActionListener oyenteAccion=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae){
+
                 RegistroGUI registro = new RegistroGUI(registros.get(registrosComboBox.getSelectedItem()));
             }
         };
@@ -119,6 +121,7 @@ public class RegistrarRegistroGUI extends JDialog {
                 int confirmado = JOptionPane.showConfirmDialog(RegistrarRegistroGUI.this,
                         "Seguro que desea terminar el registro?",
                         "",JOptionPane.YES_NO_OPTION);
+
                 if(confirmado==0) {
                     fechaHoy = new Date();
                     boolean agregado = guardarRegistro();

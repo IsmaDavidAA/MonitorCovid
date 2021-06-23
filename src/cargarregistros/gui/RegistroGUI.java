@@ -14,6 +14,7 @@ public class RegistroGUI extends JDialog{
     private Registro registro;
     private JTable table1;
     public RegistroGUI(Registro registro) {
+        this.setDefaultCloseOperation(2);
         this.registro = registro;
         this.setLocation(200, 50);
         this.setPreferredSize(new Dimension(410, 300));

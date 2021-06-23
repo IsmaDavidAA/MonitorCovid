@@ -23,6 +23,7 @@ public class RegistrarSintomaGUI extends JDialog{
     private Validador validador;
     private String tipoSintoma;
     public RegistrarSintomaGUI() {
+        this.setDefaultCloseOperation(2);
         this.setLocation(200, 50);
         this.setPreferredSize(new Dimension(410, 600));
         cargarComponentes();
@@ -37,7 +38,6 @@ public class RegistrarSintomaGUI extends JDialog{
         this.setModal(true);
         this.setVisible(true);
         this.setTitle("Registrar sintomas");
-
     }
 
     public void cargarComponentes(){
@@ -51,7 +51,6 @@ public class RegistrarSintomaGUI extends JDialog{
         SintomasTable = new JTable();
         addSintomaButton.setText("Agregar sintoma");
         nombreSintomaTextField.setPreferredSize(new Dimension(150, 20));
-
         sintomasOpcionesPanel.add(tiposSintomasComboBox);
         addSintomaPanel.add(nombreSintomaTextField);
         addSintomaPanel.add(addSintomaButton);
@@ -86,6 +85,7 @@ public class RegistrarSintomaGUI extends JDialog{
         ActionListener oyenteAccion=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae){
+
                 tipoSintoma = (String) tiposSintomasComboBox.getSelectedItem();
             }
         };
