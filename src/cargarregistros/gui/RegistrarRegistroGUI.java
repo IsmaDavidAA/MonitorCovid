@@ -13,10 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class RegistrarRegistroGUI extends JDialog {
+public class RegistrarRegistroGUI extends JFrame {
     private JPanel addRegistroPanel;
     private JPanel showRegistrosPanel;
     private JPanel tablePanel;
@@ -30,7 +31,6 @@ public class RegistrarRegistroGUI extends JDialog {
     private DefaultComboBoxModel combo;
     private SimpleDateFormat formatter;
     public RegistrarRegistroGUI(Sintomas sintomas) {
-        this.setDefaultCloseOperation(2);
         this.setLocation(200, 50);
         formatter = new SimpleDateFormat("dd-MM-yyyy-hh:mm");
         this.setPreferredSize(new Dimension(410, 600));
@@ -42,11 +42,36 @@ public class RegistrarRegistroGUI extends JDialog {
         cargarComponentes();
         this.pack();
         this.setResizable(false);
-        this.setModal(true);
-        this.setVisible(true);
+//        this.setModal(true);
+//        this.setVisible(true);
         this.setPreferredSize(new Dimension(420, 700));
         this.setTitle("Registrar registros");
 
+        final RegistrarRegistroGUI frame = this;
+
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent we){
+                try {
+                    synchronized(frame){
+                        frame.notify();
+                    }
+                    frame.setVisible(false);
+                    frame.dispose();
+                } catch (Exception e){
+                    System.out.println(e.getMessage());
+                    System.out.println("Error al guardar");
+                }
+            }
+        });
+        setVisible(true);
+        synchronized(frame){
+            try{
+                frame.wait();
+            }
+            catch(InterruptedException ex){
+            }
+        }
     }
 
 

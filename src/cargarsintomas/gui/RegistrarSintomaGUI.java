@@ -1,5 +1,6 @@
 package cargarsintomas.gui;
 
+import cargarregistros.gui.RegistrarRegistroGUI;
 import cargarsintomas.GestorArchivoSintomas;
 import cargarsintomas.GestorPaquete;
 import monitor.Sintoma;
@@ -9,8 +10,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class RegistrarSintomaGUI extends JDialog{
+public class RegistrarSintomaGUI extends JFrame{
     private JPanel sintomasOpcionesPanel;
     private JPanel addSintomaPanel;
     private JPanel tablePanel;
@@ -35,9 +38,35 @@ public class RegistrarSintomaGUI extends JDialog{
         this.SintomasTable.setEnabled(false);
         this.pack();
         this.setResizable(false);
-        this.setModal(true);
+//        this.setModal(true);
         this.setVisible(true);
         this.setTitle("Registrar sintomas");
+
+        final RegistrarSintomaGUI frame = this;
+
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent we){
+                try {
+                    synchronized(frame){
+                        frame.notify();
+                    }
+                    frame.setVisible(false);
+                    frame.dispose();
+                } catch (Exception e){
+                    System.out.println(e.getMessage());
+                    System.out.println("Error al guardar");
+                }
+            }
+        });
+        setVisible(true);
+        synchronized(frame){
+            try{
+                frame.wait();
+            }
+            catch(InterruptedException ex){
+            }
+        }
     }
 
     public void cargarComponentes(){

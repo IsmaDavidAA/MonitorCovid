@@ -26,6 +26,7 @@ public class RegistroGUI extends JDialog{
         this.setModal(true);
         this.setVisible(true);
         this.setTitle("Registro");
+
     }
 
     public void cargarComponentes(){
