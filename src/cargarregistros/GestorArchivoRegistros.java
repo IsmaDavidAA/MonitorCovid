@@ -74,17 +74,17 @@ public class GestorArchivoRegistros {
     public Map<Date, Registro> getMapRegistros(){
         Map<Date, Registro> registros = new HashMap<>();
         for(Registro registro: getRegistrosArchivo()){
-            try{
-                Class<?> c = registro.getClass();
-                Field dateRecord = c.getDeclaredField("fecha");
-                dateRecord.setAccessible(true);
-                Date fecha = (Date)dateRecord.get(registro);
-                dateRecord.setAccessible(false);
-                registros.put(fecha, registro);
-            }catch (Exception e){
+//            try{
+//                Class<?> c = registro.getClass();
+//                Field dateRecord = c.getDeclaredField("fecha");
+//                dateRecord.setAccessible(true);
+//                Date fecha = (Date)dateRecord.get(registro);
+//                dateRecord.setAccessible(false);
+//            }catch (Exception e){
+//
+//            }
 
-            }
-
+            registros.put(registro.getFecha(), registro);
         }
         return registros;
     }
