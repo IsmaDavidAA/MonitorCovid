@@ -2,11 +2,9 @@ package cargarsintomas;
 
 import monitor.Sintoma;
 import monitor.Sintomas;
-
 import java.io.*;
 import java.lang.reflect.Constructor;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
 
 public class GestorArchivoSintomas {
     private String archivoSintomas;
@@ -40,13 +38,23 @@ public class GestorArchivoSintomas {
             file.writeObject(sintomas);
             file.close();
             guardado = true;
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return guardado;
     }
-
-
-
     public Sintomas getSintomasArchivo(){
         Sintomas sintomas = new Sintomas();
         ObjectInputStream file = null;
@@ -54,16 +62,13 @@ public class GestorArchivoSintomas {
             file = new ObjectInputStream(new FileInputStream(archivoSintomas));
             sintomas = (Sintomas) file.readObject();
             file.close();
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return sintomas;
-    }
-    public Set<String> getNombresSintomas(){
-        Set<String> sintomasNombres =  new HashSet<>();
-        Sintomas sintomas = getSintomasArchivo();
-        for (Sintoma sintoma: sintomas) {
-            sintomasNombres.add(sintoma.toString());
-        }
-        return sintomasNombres;
     }
 }

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GestorPaquete {
 
-    public Class[] getClasses(String packageName){
+    private Class[] getClasses(String packageName){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
         String path = packageName.replace('.', '/');
@@ -32,7 +32,7 @@ public class GestorPaquete {
 
 
 
-    public List findClasses(File directorio, String nombrePaquete){
+    private List findClasses(File directorio, String nombrePaquete){
         List classes = new ArrayList();
         if (directorio.exists()) {
             File[] files = directorio.listFiles();

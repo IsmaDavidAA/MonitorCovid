@@ -1,6 +1,5 @@
 package cargarsintomas;
 
-import cargarsintomas.gui.RegistrarSintomaConsola;
 import cargarsintomas.gui.RegistrarSintomaGUI;
 import monitor.Sintomas;
 
@@ -14,7 +13,6 @@ public class CargarSintomas {
     }
 
     private void cargarSintomas(){
-//        RegistrarSintomaConsola interfaz = new RegistrarSintomaConsola();
         RegistrarSintomaGUI interfaz = new RegistrarSintomaGUI();
     }
 

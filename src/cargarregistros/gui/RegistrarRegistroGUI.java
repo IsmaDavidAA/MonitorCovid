@@ -2,28 +2,27 @@ package cargarregistros.gui;
 
 import cargarregistros.GestorArchivoRegistros;
 import monitor.Registro;
-import monitor.Sintoma;
 import monitor.Sintomas;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class RegistrarRegistroGUI extends JFrame {
     private JPanel addRegistroPanel;
     private JPanel showRegistrosPanel;
-    private JPanel tablePanel;
+    private TablaRegistroSintomas tablePanel;
+    private JPanel finalizarPanel;
     private JComboBox registrosComboBox;
     private JButton addRegistroButton;
-    private JTable sintomasTable;
+    private JButton finalizarButton;
+    private JPanel fechaRegistroPanel;
+    private TablaSintomasRegistrados tablaSintomasPanel;
+    private JLabel fechaLabel;
     private GestorArchivoRegistros gestorArchivoRegistros;
     private Sintomas sintomas;
     private Date fechaHoy;
@@ -32,39 +31,24 @@ public class RegistrarRegistroGUI extends JFrame {
     private SimpleDateFormat formatter;
     public RegistrarRegistroGUI(Sintomas sintomas) {
         this.setLocation(200, 50);
-        formatter = new SimpleDateFormat("dd-MM-yyyy-hh:mm");
-        this.setPreferredSize(new Dimension(410, 600));
+        this.setPreferredSize(new Dimension(1000, 620));
+        this.setLayout(null);
         this.sintomas = sintomas;
-        this.registros = new HashMap<>();
-        fechaHoy = new Date();
-        gestorArchivoRegistros = new GestorArchivoRegistros();
-        registrosComboBox = new JComboBox();
+        crearComponentes();
         cargarComponentes();
+        cargarCheckBox();
+        tablePanel.cargarTablaDeSintomas(sintomas);
+        eventoOyenteAgregarSintoma();
+        eventoOyenteShowRegistro();
         this.pack();
         this.setResizable(false);
-//        this.setModal(true);
-//        this.setVisible(true);
-        this.setPreferredSize(new Dimension(420, 700));
         this.setTitle("Registrar registros");
+        this.setVisible(true);
+        finalizar(this);
+        detenerHilo(this);
+    }
 
-        final RegistrarRegistroGUI frame = this;
-
-        this.addWindowListener(new WindowAdapter(){
-            @Override
-            public void windowClosing(WindowEvent we){
-                try {
-                    synchronized(frame){
-                        frame.notify();
-                    }
-                    frame.setVisible(false);
-                    frame.dispose();
-                } catch (Exception e){
-                    System.out.println(e.getMessage());
-                    System.out.println("Error al guardar");
-                }
-            }
-        });
-        setVisible(true);
+    private void detenerHilo(JFrame frame){
         synchronized(frame){
             try{
                 frame.wait();
@@ -74,46 +58,85 @@ public class RegistrarRegistroGUI extends JFrame {
         }
     }
 
-
-    public void cargarComponentes(){
+    private void crearComponentes(){
+        this.registros = new HashMap<>();
+        fechaHoy = new Date();
+        formatter = new SimpleDateFormat("dd-MM-yyyy-hh:mm");
+        gestorArchivoRegistros = new GestorArchivoRegistros();
+        registrosComboBox = new JComboBox();
         addRegistroPanel = new JPanel();
         showRegistrosPanel = new JPanel();
-        tablePanel = new JPanel();
-        this.setLayout(null);
-        sintomasTable = new JTable();
+        tablePanel = new TablaRegistroSintomas();
+        finalizarPanel = new JPanel();
+        finalizarButton = new JButton("Finalizar");
         addRegistroButton = new JButton("Agregar registro");
-        sintomasTable.setBounds(5,5, 400, 400);
-        tablePanel.add(sintomasTable);
-        cargarCheckBox();
+        fechaRegistroPanel = new JPanel();
+        tablaSintomasPanel = new TablaSintomasRegistrados();
+        fechaLabel = new JLabel("");
+    }
+    private void cargarComponentes(){
+        fechaRegistroPanel.add(new JLabel("Registro"));
+        fechaRegistroPanel.add(fechaLabel);
+        finalizarPanel.add(finalizarButton);
         addRegistroPanel.add(new JLabel("Fecha:"));
         addRegistroPanel.add(new JLabel(new SimpleDateFormat("dd-MM-yyyy").format(fechaHoy.getTime()) +"..."));
         addRegistroPanel.add(addRegistroButton);
         showRegistrosPanel.add(new JLabel("Registros"));
         showRegistrosPanel.add(registrosComboBox);
+        tablaSintomasPanel.setBounds(510, 110, 420, 420);
+        tablaSintomasPanel.setLayout(new BorderLayout());
+        fechaRegistroPanel.setBounds(600, 80, 240, 60);
+        finalizarPanel.setBounds(700,550, 200, 40);
         addRegistroPanel.setBounds(10, 10, 200, 50);
-        showRegistrosPanel.setBounds(200, 10, 200, 50);
-        tablePanel.setBounds(0, 130, 420, 420);
+        showRegistrosPanel.setBounds(600, 10, 200, 50);
+        tablePanel.setBounds(20, 110, 420, 420);
         tablePanel.setLayout(new BorderLayout());
-        cargarTablaDeSintomas();
-        addCheckBox(1, sintomasTable);
+
         this.add(addRegistroPanel);
         this.add(showRegistrosPanel);
         this.add(tablePanel);
-        eventoOyenteAgregarSintoma();
-        eventoOyenteShowRegistro();
+        this.add(finalizarPanel);
+        this.add(tablaSintomasPanel);
+        this.add(fechaRegistroPanel);
+
     }
-    public void eventoOyenteShowRegistro() {
+    private void eventoOyenteShowRegistro() {
         ActionListener oyenteAccion=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae){
-
-                RegistroGUI registro = new RegistroGUI(registros.get(registrosComboBox.getSelectedItem()));
+                fechaLabel.setText((registros.get(registrosComboBox.getSelectedItem()).getFecha()).toString());
+                tablaSintomasPanel.actualizarTablaDeSintomas(registros.get(registrosComboBox.getSelectedItem()).getSintomas());
             }
         };
         registrosComboBox.addActionListener(oyenteAccion);
     }
 
-    public void cargarCheckBox(){
+    private void finalizar(JFrame frame){
+        ActionListener oyenteAccion=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae){
+                closeWindow(frame);
+            }
+        };
+        finalizarButton.addActionListener(oyenteAccion);
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent we){
+                closeWindow(frame);
+            }
+        });
+    }
+
+    private void closeWindow(JFrame frame){
+        try {
+            synchronized(frame){
+                frame.notify();
+            }
+            frame.dispose();
+        } catch (Exception e){
+        }
+    }
+    private void cargarCheckBox(){
         this.registros = (HashMap<Date, Registro>) gestorArchivoRegistros.getMapRegistros();
         Date[] fechas = new Date[registros.size()];
         int i=0;
@@ -124,64 +147,28 @@ public class RegistrarRegistroGUI extends JFrame {
         combo = new DefaultComboBoxModel(fechas);
         registrosComboBox.setModel(combo);
     }
-    public void addCheckBox(int column, JTable table) {
-        TableColumn tc = table.getColumnModel().getColumn(column);
-        tc.setCellEditor(table.getDefaultEditor(Boolean.class));
-        tc.setCellRenderer(table.getDefaultRenderer(Boolean.class));
-    }
-    public void cargarTablaDeSintomas(){
-        DefaultTableModel table = new DefaultTableModel();
-        table.addColumn("Sintoma");
-        table.addColumn("Agregado");
-        for (Sintoma sintoma : sintomas) {
-            table.addRow(new Object[]{sintoma});
-        }
-        sintomasTable.setModel(table);
-    }
 
-    public void eventoOyenteAgregarSintoma() {
+    private void eventoOyenteAgregarSintoma() {
         ActionListener oyenteAccion=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae){
                 int confirmado = JOptionPane.showConfirmDialog(RegistrarRegistroGUI.this,
                         "Seguro que desea terminar el registro?",
                         "",JOptionPane.YES_NO_OPTION);
-
                 if(confirmado==0) {
                     fechaHoy = new Date();
-                    boolean agregado = guardarRegistro();
-                        if (agregado) {
+                    boolean agregado = gestorArchivoRegistros.guardarRegistro(tablePanel.getSintomasSeleccionados(),
+                            (Date) fechaHoy.clone());
+                    if (agregado) {
                             cargarCheckBox();
-                            mensajeDeAgregado("Se agrego el registro con la fecha: " +
+                            JOptionPane.showMessageDialog(RegistrarRegistroGUI.this,"Se agrego el registro con la fecha: " +
                                     formatter.format(fechaHoy.getTime()));
                         } else {
-                            mensajeDeAgregado("Lo sentimos, no se pudo agregar");
+                            JOptionPane.showMessageDialog(RegistrarRegistroGUI.this,"Lo sentimos, no se pudo agregar");
                         }
                 }
             }
         };
         addRegistroButton.addActionListener(oyenteAccion);
-    }
-    private void mensajeDeAgregado(String msjagregado){
-        JOptionPane.showMessageDialog(RegistrarRegistroGUI.this, msjagregado);
-    }
-
-    private boolean guardarRegistro(){
-        boolean guardado;
-        Sintomas sintomasParaGuardar = new Sintomas();
-        for (int i = 0; i < sintomasTable.getRowCount(); i++) {
-            if  ( estaMarcado(i, 1, sintomasTable)) {
-                sintomasParaGuardar.add((Sintoma) sintomasTable.getValueAt(i, 0));
-            }
-        }
-        guardado = gestorArchivoRegistros.guardarRegistro(sintomasParaGuardar, (Date) fechaHoy.clone());
-        return guardado;
-    }
-    private boolean estaMarcado(int row, int column, JTable table) {
-        boolean marcado = false;
-        if(table.getValueAt(row, column) != null) {
-            marcado = (boolean) table.getValueAt(row, column);
-        }
-        return marcado;
     }
 }

@@ -1,8 +1,9 @@
 package cargarsintomas.gui;
 
 import cargarsintomas.GestorArchivoSintomas;
+import monitor.Sintoma;
+import monitor.Sintomas;
 
-import java.util.Locale;
 import java.util.Set;
 
 public class Validador {
@@ -14,15 +15,15 @@ public class Validador {
     public boolean validar(String texto){
         boolean valido = true;
 
-        Set<String> listaTexto = gestorArchivoSintomas.getNombresSintomas();
+        Sintomas listaTexto = gestorArchivoSintomas.getSintomasArchivo();
         texto = texto.replaceAll(" ","");
         texto = texto.toUpperCase();
 
         if(!tieneSoloLetras(texto) || texto.length() < 3){
             valido = false;
         }else{
-            for (String nombreTexto: listaTexto) {
-                if(nombreTexto.replaceAll(" ", "").equals(texto)){
+            for (Sintoma nombreTexto: listaTexto) {
+                if(nombreTexto.toString().replaceAll(" ", "").equals(texto)){
                     valido = false;
                 }
             }

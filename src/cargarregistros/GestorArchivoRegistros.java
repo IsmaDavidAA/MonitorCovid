@@ -2,11 +2,8 @@ package cargarregistros;
 
 import monitor.Registro;
 import monitor.Registros;
-import monitor.Sintoma;
 import monitor.Sintomas;
-
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class GestorArchivoRegistros {
@@ -37,7 +34,10 @@ public class GestorArchivoRegistros {
             file.writeObject(registros);
             file.close();
             guardado = true;
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return guardado;
     }
@@ -51,7 +51,12 @@ public class GestorArchivoRegistros {
             file = new ObjectInputStream(new FileInputStream(archivoRegistros));
             registros = (Registros) file.readObject();
             file.close();
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return registros;
     }
@@ -66,7 +71,12 @@ public class GestorArchivoRegistros {
             registros = (Registros) file.readObject();
             ultimo = registros.peek();
             file.close();
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return ultimo;
     }
@@ -74,16 +84,6 @@ public class GestorArchivoRegistros {
     public Map<Date, Registro> getMapRegistros(){
         Map<Date, Registro> registros = new HashMap<>();
         for(Registro registro: getRegistrosArchivo()){
-//            try{
-//                Class<?> c = registro.getClass();
-//                Field dateRecord = c.getDeclaredField("fecha");
-//                dateRecord.setAccessible(true);
-//                Date fecha = (Date)dateRecord.get(registro);
-//                dateRecord.setAccessible(false);
-//            }catch (Exception e){
-//
-//            }
-
             registros.put(registro.getFecha(), registro);
         }
         return registros;
