@@ -5,6 +5,7 @@ import monitor.Sintomas;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import java.awt.*;
 
 public class TablaRegistroSintomas extends JPanel {
     private JTable sintomasTable;
@@ -31,8 +32,12 @@ public class TablaRegistroSintomas extends JPanel {
         addCheckBox(1, sintomasTable);
         sintomasTable.setEditingColumn(1);
         scrollPane = new JScrollPane(sintomasTable);
-        scrollPane.setBounds(5,15, 400, 400);
+//        scrollPane.setBounds(5,15, 400, 400);
         this.add(scrollPane);
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        scrollPane.setBounds(5,15, 400, 400);
     }
     private void addCheckBox(int column, JTable table) {
         TableColumn tc = table.getColumnModel().getColumn(column);

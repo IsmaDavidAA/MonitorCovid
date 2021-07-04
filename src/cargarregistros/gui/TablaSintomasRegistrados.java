@@ -25,7 +25,11 @@ public class TablaSintomasRegistrados extends JPanel {
         sintomasTable= new JTable(table);
         this.sintomasTable.setEnabled(false);
         scrollPane = new JScrollPane(sintomasTable);
-        scrollPane.setBounds(5,15, 400, 400);
+//        scrollPane.setBounds(5,15, 400, 400);
         this.add(scrollPane);
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        scrollPane.setBounds(5, 15, 400,400);
     }
 }

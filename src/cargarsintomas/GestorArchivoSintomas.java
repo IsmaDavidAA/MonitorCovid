@@ -10,7 +10,7 @@ public class GestorArchivoSintomas {
     private String archivoSintomas;
     private String paquete;
     public GestorArchivoSintomas(){
-        archivoSintomas = "cargarsintomas/sintomas.dat";
+        archivoSintomas = "sintomas.dat";
         paquete = "sintomas";
         verificarExistenciaArchivo();
     }
@@ -20,7 +20,7 @@ public class GestorArchivoSintomas {
             try {
                 fileSintomas.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -39,19 +39,19 @@ public class GestorArchivoSintomas {
             file.close();
             guardado = true;
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (InstantiationException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return guardado;
     }
@@ -63,11 +63,11 @@ public class GestorArchivoSintomas {
             sintomas = (Sintomas) file.readObject();
             file.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return sintomas;
     }

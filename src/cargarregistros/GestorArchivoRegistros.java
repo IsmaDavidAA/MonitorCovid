@@ -9,7 +9,7 @@ import java.util.*;
 public class GestorArchivoRegistros {
     private String archivoRegistros;
     public GestorArchivoRegistros() {
-        archivoRegistros = "cargarregistros/registros.dat";
+        archivoRegistros = "registros.dat";
         verificarExistenciaArchivo();
     }
 
@@ -35,9 +35,9 @@ public class GestorArchivoRegistros {
             file.close();
             guardado = true;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return guardado;
     }
@@ -52,11 +52,11 @@ public class GestorArchivoRegistros {
             registros = (Registros) file.readObject();
             file.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return registros;
     }
@@ -72,11 +72,11 @@ public class GestorArchivoRegistros {
             ultimo = registros.peek();
             file.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return ultimo;
     }
