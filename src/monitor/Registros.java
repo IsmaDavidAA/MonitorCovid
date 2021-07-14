@@ -19,6 +19,9 @@ public class Registros implements Iterable<Registro>, Serializable {
         return registros.peek();
     }
 
+    public Registro pop(){
+        return registros.pop();
+    }
     public boolean isEmpty(){
         return registros.isEmpty();
     }

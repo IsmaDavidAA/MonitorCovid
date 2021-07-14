@@ -1,13 +1,13 @@
 package diagnosticos;
 
-import monitor.FuncionDiagnostico;
-import monitor.Registro;
-import monitor.Registros;
-import monitor.Sintoma;
-import monitor.Sintomas;
+        import monitor.FuncionDiagnostico;
+        import monitor.Registro;
+        import monitor.Registros;
+        import monitor.Sintoma;
+        import monitor.Sintomas;
 
-import java.util.HashMap;
-import java.util.Map;
+        import java.util.HashMap;
+        import java.util.Map;
 
 public class DiagnosticoSimple extends FuncionDiagnostico {
 
@@ -28,12 +28,20 @@ public class DiagnosticoSimple extends FuncionDiagnostico {
             Registro registro = registros.peek();
             Sintomas sintomas = registro.getSintomas();
             for (Sintoma s: sintomas) {
-                if(pesos.containsKey(s)) {
-                    pesoSintomas += pesos.get(s);
-                }
+                pesoSintomas += pesos.get(s);
             }
         }
         return pesoSintomas;
+    }
+
+    @Override
+    public void mostrarDiagnostico(int resultadoDiagnostico){
+
+    }
+
+    @Override
+    public Sintomas getSintomasFase(){
+        return new Sintomas();
     }
 
 }

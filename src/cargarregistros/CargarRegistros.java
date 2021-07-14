@@ -1,8 +1,8 @@
 package cargarregistros;
 
-import cargarregistros.gui.RegistrarRegistroConsola;
 import cargarregistros.gui.RegistrarRegistroGUI;
 import monitor.Registro;
+import monitor.Registros;
 import monitor.Sintomas;
 
 import java.util.Date;
@@ -25,7 +25,6 @@ public class CargarRegistros {
         }
     }
 
-
     public Registro getRegistro() {
         cargarSintoma();
         Registro ultimoRegistro = gestorArchivoRegistros.getUltimoRegistro();
@@ -33,6 +32,11 @@ public class CargarRegistros {
             ultimoRegistro = new Registro(new Date(),new Sintomas());
         }
         return ultimoRegistro;
+    }
+
+    public Registros getRegistros(){
+        cargarSintoma();
+        return gestorArchivoRegistros.getRegistrosArchivo();
     }
 }
 

@@ -9,7 +9,7 @@ import java.util.*;
 public class GestorArchivoRegistros {
     private String archivoRegistros;
     public GestorArchivoRegistros() {
-        archivoRegistros = "registros.dat";
+        archivoRegistros = "IsmaRegistros.dat";
         verificarExistenciaArchivo();
     }
 
@@ -35,9 +35,7 @@ public class GestorArchivoRegistros {
             file.close();
             guardado = true;
         } catch (FileNotFoundException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
-//            e.printStackTrace();
         }
         return guardado;
     }
@@ -52,11 +50,8 @@ public class GestorArchivoRegistros {
             registros = (Registros) file.readObject();
             file.close();
         } catch (FileNotFoundException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
-//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
         }
         return registros;
     }
@@ -72,20 +67,9 @@ public class GestorArchivoRegistros {
             ultimo = registros.peek();
             file.close();
         } catch (FileNotFoundException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
-//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
         }
         return ultimo;
-    }
-
-    public Map<Date, Registro> getMapRegistros(){
-        Map<Date, Registro> registros = new HashMap<>();
-        for(Registro registro: getRegistrosArchivo()){
-            registros.put(registro.getFecha(), registro);
-        }
-        return registros;
     }
 }

@@ -1,66 +1,71 @@
 package cargarsintomas;
 
+import monitor.Sintoma;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class GestorPaquete {
 
-    private Class[] getClasses(String packageName){
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        assert classLoader != null;
-        String path = packageName.replace('.', '/');
-        Enumeration resources = null;
-        try {
-            resources = classLoader.getResources(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        List dirs = new ArrayList();
-        while (resources.hasMoreElements()) {
-            URL resource = (URL) resources.nextElement();
-            dirs.add(new File(resource.getFile()));
-        }
-        ArrayList classes = new ArrayList();
-        for (Object directory : dirs) {
-            classes.addAll(findClasses((File) directory, packageName));
-        }
-
-        return (Class[]) classes.toArray(new Class[classes.size()]);
-    }
-
-
-
-    private List findClasses(File directorio, String nombrePaquete){
-        List classes = new ArrayList();
-        if (directorio.exists()) {
-            File[] files = directorio.listFiles();
-            for (File file : files) {
-                if (!file.isDirectory() && file.getName().endsWith(".class")) {
-                    try {
-                        classes.add(Class.forName(nombrePaquete + '.' + file.getName().substring(0, file.getName().indexOf("."))));
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+    public List<String> getPaquete(String nombrePaquete)  {
+        List<String> listaClasesPaquete = new ArrayList<>();
+        File[] classes = this.archivosPaquete(nombrePaquete);
+        if (classes == null) {
+            try {
+                ZipInputStream zip = new ZipInputStream(new FileInputStream("home.jar"));
+                for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
+                    if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+                        String className = entry.getName().replace('/', '.'); // including ".class"
+                        if(className.split("\\.")[0].equals("sintomas")) {
+                            listaClasesPaquete.add(className.split("\\.")[1]);
+                        }
                     }
                 }
+            } catch ( IOException e) {
+                e.printStackTrace();
             }
-        }
-        return classes;
-    }
-
-
-    public Set<String> getTiposDeSintomas() {
-        Set<String> tiposDeSintomas = new HashSet<>();
-        Class[] clases = getClasses("sintomas");
-        for (Class x:clases) {
-            if(x.getGenericSuperclass() != null && x.getModifiers() == 1){
-                if(x.getGenericSuperclass().getTypeName().endsWith(".Sintoma")){
-                    String nombre = x.getName().substring(x.getName().indexOf(".") +1);
-                    tiposDeSintomas.add(nombre);
+        } else {
+            Class<Sintoma> sintomaClass = Sintoma.class;
+            for (File clase: classes){
+                try {
+                    String nombreClase = clase.getName().split("\\.")[0];
+                    Class.forName(nombrePaquete+"."+nombreClase).asSubclass(sintomaClass);
+                    listaClasesPaquete.add(nombreClase);
+                } catch ( ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         }
+        return listaClasesPaquete;
+    }
+
+    private File[] archivosPaquete(String nombrePaquete) {
+        File dir = null;
+        File[] archivos = null;
+        try {
+            Enumeration<URL> urls = Thread.currentThread().getContextClassLoader()
+                    .getResources(nombrePaquete);
+            while (urls.hasMoreElements()) {
+                URL url = urls.nextElement();
+                dir = new File(url.getFile());
+            }
+            archivos = dir.listFiles();
+        } catch (IOException e) {
+
+        } catch (NullPointerException e){
+
+        }
+        return archivos;
+    }
+
+
+    public List<String> getTiposDeSintomas() {
+        List<String> tiposDeSintomas  = getPaquete("sintomas");
         return tiposDeSintomas;
     }
 }

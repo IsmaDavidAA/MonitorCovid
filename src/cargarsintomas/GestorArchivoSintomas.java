@@ -10,7 +10,7 @@ public class GestorArchivoSintomas {
     private String archivoSintomas;
     private String paquete;
     public GestorArchivoSintomas(){
-        archivoSintomas = "sintomas.dat";
+        archivoSintomas = "IsmaSintomas.dat";
         paquete = "sintomas";
         verificarExistenciaArchivo();
     }
@@ -20,38 +20,40 @@ public class GestorArchivoSintomas {
             try {
                 fileSintomas.createNewFile();
             } catch (IOException e) {
-//                e.printStackTrace();
             }
         }
     }
+    public Sintoma crearSintoma(String nombreSintoma, String tipo){
+        Class<?> cl = null;
+        Sintoma sintoma=null;
+        try {
+            cl = Class.forName(paquete + "." + tipo);
+            Constructor<?> constructor = cl.getConstructor(String.class);
+            sintoma = (Sintoma) (constructor.newInstance(new Object[]{nombreSintoma}));
+        } catch (ClassNotFoundException e) {
+        } catch (NoSuchMethodException e) {
+        } catch (IllegalAccessException e) {
+        } catch (InstantiationException e) {
+        } catch (InvocationTargetException e) {
+        }
+        return sintoma;
+    }
+
     public boolean guardarSintoma(String nombreSintoma, String tipo) {
         boolean guardado=false;
         Sintoma sintoma = null;
         Sintomas sintomas = getSintomasArchivo();
         ObjectOutputStream file = null;
         try {
-            Class<?> cl = Class.forName(paquete + "." + tipo);
-            Constructor<?> constructor = cl.getConstructor(String.class);
-            sintoma = (Sintoma) (constructor.newInstance(new Object[]{nombreSintoma}));
+//            Class<?> cl = Class.forName(paquete + "." + tipo);
+//            Constructor<?> constructor = cl.getConstructor(String.class);
+            sintoma = crearSintoma(nombreSintoma, tipo);//(Sintoma) (constructor.newInstance(new Object[]{nombreSintoma}));
             sintomas.add(sintoma);
             file = new ObjectOutputStream(new FileOutputStream(archivoSintomas));
             file.writeObject(sintomas);
             file.close();
             guardado = true;
-        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-        } catch (InstantiationException e) {
-//            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
-//            e.printStackTrace();
         }
         return guardado;
     }
@@ -63,11 +65,8 @@ public class GestorArchivoSintomas {
             sintomas = (Sintomas) file.readObject();
             file.close();
         } catch (FileNotFoundException e) {
-//            e.printStackTrace();
         } catch (IOException e) {
-//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
         }
         return sintomas;
     }
