@@ -24,12 +24,13 @@ public class Monitor {
 
     public void monitorear() {
         registros = cargarRegistros.getRegistros();
-        resultadoDiagnostico = funcion.diagnostico(registros);
+//        resultadoDiagnostico = funcion.diagnostico(registros);
+        resultadoDiagnostico = 0;
         mostrarDiaFase(resultadoDiagnostico);
     }
 
     private void mostrarDiaFase(int resultadoDiagnostico){
-
+        System.out.println(fase.getNombre()+" : "+fase.getDia());
         System.out.println(resultadoDiagnostico);
     }
 
