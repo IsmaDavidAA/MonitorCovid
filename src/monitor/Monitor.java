@@ -4,6 +4,7 @@ package monitor;
 import cargarregistros.CargarRegistros;
 import cargarsintomas.CargarSintomas;
 import diagnosticos.DiagnosticoCompleto;
+import diagnosticos.Recomendador;
 
 public class Monitor {
     private Fase fase;
@@ -30,8 +31,12 @@ public class Monitor {
 
     private void mostrarDiaFase(int resultadoDiagnostico){
         fase = (new DatosFase()).leerDatosFase();
-        System.out.println(fase.getNombre()+" : "+fase.getDia());
-//        System.out.println(resultadoDiagnostico);
+        Recomendador recomendador = new Recomendador(fase);
+        System.out.println(recomendador.recomendacion());
+        if(fase.terminada()){
+            fase = new Fase("SegundaFase", 4);
+            (new DatosFase()).guardarDatosFase(fase);
+        }
     }
 
 
@@ -40,3 +45,9 @@ public class Monitor {
     }
 
 }
+
+// <PrimeraFase, List[usted esta sano,  puede que este incubando, usted esta empeorando]>
+// <SegundaFase, List[usted esta sano,  puede que este incubando, usted esta empeorando]>
+// 11 12 13 ->
+// 21 22 23
+//

@@ -13,7 +13,7 @@ public class CargarSintomas {
     }
 
     private void cargarSintomas(){
-//        RegistrarSintomaGUI interfaz = new RegistrarSintomaGUI();
+        RegistrarSintomaGUI interfaz = new RegistrarSintomaGUI();
     }
 
     public Sintomas getSintomas(){

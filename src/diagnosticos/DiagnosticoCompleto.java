@@ -33,25 +33,21 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
                 Date yesterday = calendar.getTime();
                 fase.setUltimoRegistro(yesterday);
                 cantSintomas++;
-                System.out.println(yesterday + "origen");
                 break;
             }
         }
+        fase.reiniciar();
+
         for(Registro registro: registros){
-            System.out.println(registro.getFecha()+"--------------------------");
-            if(esMayor(fase.getNombre(), registro.getSintomas())){ //si supera el 50%
-                fase.inc(registro.getFecha()); //incrementar fase || reiniciar
+            if(esMayor(fase.getNombre(), registro.getSintomas())){
+                fase.inc(registro.getFecha());
             }else{
                 fase.reiniciar();
             }
-            if(fase.terminada()){
-                System.out.println("Pasando a segunda fase");
-                fase = new Fase("SegundaFase", 4);
-            }
         }
-//        int resultado = examinarFases();
+        int resultado = examinarFases();
         datosFase.guardarDatosFase(fase);
-        return 0;
+        return resultado;
     }
 
     private boolean esMayor(String nombreFase, Sintomas sintomas){

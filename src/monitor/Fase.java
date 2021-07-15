@@ -41,7 +41,6 @@ public class Fase implements Serializable {
         if(diaAnterior(date)){
                 dia++;
                 fechaUltimoRegistro = date;
-                System.out.println(fechaUltimoRegistro + " este es ultimo " + dia);
         }else{
             fechaUltimoRegistro = date;
                 reiniciar();
@@ -54,10 +53,8 @@ public class Fase implements Serializable {
     }
     public void reiniciar(){
         dia = 0;
-        System.out.println(fechaUltimoRegistro + " Reiniciamos");
     }
     public boolean terminada(){
-        System.out.println(dia + " : "+ duracionDias);
         return dia >= duracionDias;
     }
     private boolean diaAnterior(Date hoyDate) {
