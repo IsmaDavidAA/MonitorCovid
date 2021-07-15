@@ -15,22 +15,25 @@ public class RegistrarSintomasJPanel extends JPanel {
     private final JScrollPane scrollPane;
     private final Sintomas sintomas;
     private final DefaultTableModel table;
+    private final int columnaDeCheck;
     public RegistrarSintomasJPanel(Sintomas sintomas){
         this.sintomas = sintomas;
-
+        columnaDeCheck = 2;
         table = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column){
-                return column==1? true : false;
+                return column==columnaDeCheck? true : false;
             }
         };
         table.addColumn("Sintoma");
+        table.addColumn("Categoria");
         table.addColumn("Agregado");
         sintomasTable =  new JTable(table);
-        addCheckBox(1, sintomasTable);
-        sintomasTable.setEditingColumn(1);
+        addCheckBox(columnaDeCheck, sintomasTable);
+        sintomasTable.setEditingColumn(columnaDeCheck);
         TableColumnModel columnModel = sintomasTable.getColumnModel();
-        columnModel.getColumn(1).setPreferredWidth(20);
+        columnModel.getColumn(2).setPreferredWidth(20);
+        columnModel.getColumn(1).setPreferredWidth(50);
         columnModel.getColumn(0).setPreferredWidth(260);
         TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(table);
         sintomasTable.setRowSorter(sorTable);
@@ -40,7 +43,7 @@ public class RegistrarSintomasJPanel extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        scrollPane.setBounds(0,0, 400, 400);
+        scrollPane.setBounds(0,0, 480, 400);
         limpiar();
         llenarTabla();
     }
@@ -53,7 +56,7 @@ public class RegistrarSintomasJPanel extends JPanel {
     public Sintomas getSintomasSeleccionados(){
         Sintomas sintomasParaGuardar = new Sintomas();
         for (int i = 0; i < sintomasTable.getRowCount(); i++) {
-            if  ( estaMarcado(i, 1, sintomasTable)) {
+            if  ( estaMarcado(i, columnaDeCheck, sintomasTable)) {
                 sintomasParaGuardar.add((Sintoma) sintomasTable.getValueAt(i, 0));
             }
         }
@@ -69,7 +72,7 @@ public class RegistrarSintomasJPanel extends JPanel {
     }
     private void llenarTabla(){
         for (Sintoma sintoma : sintomas) {
-            table.addRow(new Sintoma[]{sintoma});
+            table.addRow(new Object[]{sintoma, sintoma.getClass().getName().split("\\.")[1]});
         }
     }
     private void limpiar(){

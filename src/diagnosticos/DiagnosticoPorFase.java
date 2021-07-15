@@ -84,3 +84,30 @@ public class DiagnosticoPorFase extends FuncionDiagnostico {
         return estado;
     }
 }
+
+
+
+
+
+
+
+//DiagParcial - DiagDiario
+//registros.dat -> fase.dat
+//
+//1->Fase:1
+//2->Fase:2
+//
+//
+//--------------------------------------
+//DiagCompleto - DiagTotal
+//registros.dat *> fase.dat
+//[x,x,x,x] -> resultado(Fase:x)
+
+
+
+
+
+
+
+
+

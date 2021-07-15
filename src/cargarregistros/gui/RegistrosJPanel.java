@@ -67,7 +67,7 @@ public class RegistrosJPanel extends JPanel {
         addRegistroPanel.setBounds(10, 10, 200, 70);
         finalizarButton.setBounds(0, 0, 160, 25);
         finalizarPanel.setBounds(700,550, 170, 40);
-        tablePanel.setBounds(10, 110, 468, 420);
+        tablePanel.setBounds(10, 110, 500, 420);
         registrosTablaJPanel.setBounds(500, 110, 550,420);
         mensajeConfirmacionJPanel.setBounds(10, 80, 450, 30);
     }
