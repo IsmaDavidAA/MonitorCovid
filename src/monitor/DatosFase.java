@@ -48,7 +48,7 @@ public class DatosFase {
                 fase = (Fase) file.readObject();
                 file.close();
             } else {
-                fase = new Fase("PrimeraFase");
+                fase = new Fase("PrimeraFase", 3);
             }
         } catch (ClassNotFoundException e){
             e.printStackTrace();

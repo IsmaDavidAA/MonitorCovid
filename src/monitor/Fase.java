@@ -1,6 +1,7 @@
 package monitor;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Fase implements Serializable {
@@ -37,12 +38,18 @@ public class Fase implements Serializable {
     }
 
     public void inc(Date date){
-        if(diaAnterior(date)){
+        if(fechaUltimoRegistro == null){
+            this.fechaUltimoRegistro = new Date();
             dia++;
-            fechaUltimoRegistro = date;
         }else{
-            reiniciar();
+            if(diaAnterior(date)){
+                dia++;
+                fechaUltimoRegistro = date;
+            }else{
+                reiniciar();
+            }
         }
+
     }
 
     public void setUltimoRegistro(Date date){
@@ -54,7 +61,16 @@ public class Fase implements Serializable {
     public boolean terminada(){
         return dia >= duracionDias;
     }
-    private boolean diaAnterior(Date actual){
-        return true;
-    }
+    private boolean diaAnterior(Date hoyDate) {
+        boolean res = false;
+        Calendar hoy = Calendar.getInstance();
+        hoy.setTime(hoyDate);
+        Calendar ayer = Calendar.getInstance();
+        ayer.setTime(fechaUltimoRegistro);
+        hoy.add(Calendar.DATE, -1);
+        if (hoy.get(Calendar.DAY_OF_MONTH) == ayer.get(Calendar.DAY_OF_MONTH)) {
+            res = true;
+        }
+    return res;
+}
 }

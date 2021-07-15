@@ -3,7 +3,7 @@ package monitor;
 
 import cargarregistros.CargarRegistros;
 import cargarsintomas.CargarSintomas;
-import diagnosticos.DiagnosticoPorFase;
+import diagnosticos.DiagnosticoCompleto;
 
 public class Monitor {
     private Fase fase;
@@ -16,7 +16,7 @@ public class Monitor {
     public Monitor() {
         CargarSintomas cargarSintomas = new CargarSintomas();
         sintomas = cargarSintomas.getSintomas();
-        funcion = new DiagnosticoPorFase(sintomas);
+        funcion = new DiagnosticoCompleto(sintomas);
         registros = new Registros();
         fase = (new DatosFase()).leerDatosFase();
         cargarRegistros = new CargarRegistros(sintomas.getSintomasFase(fase));
@@ -24,14 +24,13 @@ public class Monitor {
 
     public void monitorear() {
         registros = cargarRegistros.getRegistros();
-//        resultadoDiagnostico = funcion.diagnostico(registros);
-        resultadoDiagnostico = 0;
+        resultadoDiagnostico = funcion.diagnostico(registros);
         mostrarDiaFase(resultadoDiagnostico);
     }
 
     private void mostrarDiaFase(int resultadoDiagnostico){
-        System.out.println(fase.getNombre()+" : "+fase.getDia());
-        System.out.println(resultadoDiagnostico);
+//        System.out.println(fase.getNombre()+" : "+fase.getDia());
+//        System.out.println(resultadoDiagnostico);
     }
 
 
