@@ -29,7 +29,8 @@ public class Monitor {
     }
 
     private void mostrarDiaFase(int resultadoDiagnostico){
-//        System.out.println(fase.getNombre()+" : "+fase.getDia());
+        fase = (new DatosFase()).leerDatosFase();
+        System.out.println(fase.getNombre()+" : "+fase.getDia());
 //        System.out.println(resultadoDiagnostico);
     }
 

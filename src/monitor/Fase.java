@@ -13,14 +13,14 @@ public class Fase implements Serializable {
         this.nombre = nombre;
         this.duracionDias = duracionDias;
         dia = 0;
-        fechaUltimoRegistro = null;
+        fechaUltimoRegistro = new Date();
     }
 
     public Fase(String nombre){
         this.nombre = nombre;
         this.duracionDias = duracionDias;
         dia = 0;
-        fechaUltimoRegistro = null;
+        fechaUltimoRegistro = new Date();
     }
 
     public String getNombre() {
@@ -57,6 +57,7 @@ public class Fase implements Serializable {
         System.out.println(fechaUltimoRegistro + " Reiniciamos");
     }
     public boolean terminada(){
+        System.out.println(dia + " : "+ duracionDias);
         return dia >= duracionDias;
     }
     private boolean diaAnterior(Date hoyDate) {

@@ -45,11 +45,11 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
                 fase.reiniciar();
             }
             if(fase.terminada()){
+                System.out.println("Pasando a segunda fase");
                 fase = new Fase("SegundaFase", 4);
             }
         }
 //        int resultado = examinarFases();
-        System.out.println(fase.getNombre()+" : " + fase.getDia());
         datosFase.guardarDatosFase(fase);
         return 0;
     }
