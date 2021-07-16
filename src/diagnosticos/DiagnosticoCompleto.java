@@ -24,7 +24,9 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
     public int diagnostico(Registros registros) {
         int contadorDias = 0;
         fase.reiniciar();
-
+        if(fase.getNombre().equals("SegundaFase")){
+            contadorDias = 3;
+        }
         for(Registro registro: registros){
             if(esMayor(fase.getNombre(), registro.getSintomas())){
                 fase.inc(registro.getFecha());
@@ -36,7 +38,6 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
                 fase.reiniciar();
             }
         }
-        System.out.println(contadorDias);
         datosFase.guardarDatosFase(fase);
         return contadorDias;
     }
@@ -57,11 +58,3 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
         return esMayor;
     }
 }
-
-// registros()->stack
-// 1 2 3 4 5 6 7 8 9 10<-
-// -> 1 2 3 4 5 6 7 8 9 10
-// Primera fase = 3
-//    0 1 0 1 1 1 0 0 1 0 1 0 1
-// Segundo fase = 5
-//    0 0 0 0 0 0 1 1 1 1 1 0 0

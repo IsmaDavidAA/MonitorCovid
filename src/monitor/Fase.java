@@ -48,6 +48,9 @@ public class Fase implements Serializable {
         }
     }
 
+    public void setDia(int dia){
+        this.dia = dia;
+    }
     public void setUltimoRegistro(Date date){
         fechaUltimoRegistro = date;
     }
@@ -74,7 +77,6 @@ public class Fase implements Serializable {
             long goodDifference = timeR1 + difference;
             resp = timeR2 <= goodDifference;
         }
-        return true; // for test development
-// return resp for production
+        return true;
     }
 }

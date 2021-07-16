@@ -31,9 +31,16 @@ public class Monitor {
 
     private void mostrarDiaFase(int resultadoDiagnostico){
         fase = (new DatosFase()).leerDatosFase();
-        Recomendador recomendador = new Recomendador(fase);
+        Recomendador recomendador;
+        if(resultadoDiagnostico == 3) {
+            Fase faseN = new Fase("PrimeraFase", 3);
+            faseN.setDia(3);
+            recomendador = new Recomendador(faseN);
+        }else{
+            recomendador = new Recomendador(fase);
+        }
         System.out.println(recomendador.recomendacion());
-        if(fase.getNombre() == "PrimeraFase" && resultadoDiagnostico == 3){
+        if(resultadoDiagnostico == 3){
             fase = new Fase("SegundaFase", 4);
             (new DatosFase()).guardarDatosFase(fase);
         }
@@ -45,3 +52,6 @@ public class Monitor {
     }
 
 }
+
+// 0 1 1 1 | dia 3 primera fase ->Pasar segunda Fase
+// 0 1 1 1
