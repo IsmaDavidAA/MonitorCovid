@@ -13,7 +13,7 @@ public class GestorArchivoRegistros {
         verificarExistenciaArchivo();
     }
 
-    private void verificarExistenciaArchivo(){
+    public void verificarExistenciaArchivo(){
         File fileSintomas = new File(archivoRegistros);
         if(!fileSintomas.exists()){
             try {

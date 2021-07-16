@@ -33,7 +33,7 @@ public class Monitor {
         fase = (new DatosFase()).leerDatosFase();
         Recomendador recomendador = new Recomendador(fase);
         System.out.println(recomendador.recomendacion());
-        if(fase.getDia() >= fase.getDuracionDias()){
+        if(fase.getNombre() == "PrimeraFase" && resultadoDiagnostico == 3){
             fase = new Fase("SegundaFase", 4);
             (new DatosFase()).guardarDatosFase(fase);
         }

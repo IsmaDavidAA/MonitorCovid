@@ -35,8 +35,8 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
             }else{
                 fase.reiniciar();
             }
-
         }
+        System.out.println(contadorDias);
         datosFase.guardarDatosFase(fase);
         return contadorDias;
     }
