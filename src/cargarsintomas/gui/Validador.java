@@ -4,25 +4,22 @@ import cargarsintomas.GestorArchivoSintomas;
 import monitor.Sintoma;
 import monitor.Sintomas;
 
-import java.util.Set;
-
 public class Validador {
-    GestorArchivoSintomas gestorArchivoSintomas;
+//    GestorArchivoSintomas gestorArchivoSintomas;
     public Validador(){
-        gestorArchivoSintomas = new GestorArchivoSintomas();
+//        gestorArchivoSintomas = new GestorArchivoSintomas();
     }
 
-    public boolean validar(String texto){
+    public boolean validar(String texto, Sintomas sintomas){
         boolean valido = true;
-
-        Sintomas listaTexto = gestorArchivoSintomas.getSintomasArchivo();
+//        Sintomas listaTexto = sintomas;
         texto = texto.replaceAll(" ","");
         texto = texto.toUpperCase();
 
         if(!tieneSoloLetras(texto) || texto.length() < 3){
             valido = false;
         }else{
-            for (Sintoma nombreTexto: listaTexto) {
+            for (Sintoma nombreTexto: sintomas) {
                 if(nombreTexto.toString().replaceAll(" ", "").equals(texto)){
                     valido = false;
                 }

@@ -8,6 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SintomasTableJPanel extends JPanel {
     private final JTable sintomasTable;
@@ -27,6 +29,10 @@ public class SintomasTableJPanel extends JPanel {
         TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(table);
         sintomasTable.setRowSorter(sorTable);
         scrollPane = new JScrollPane(sintomasTable);
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+        sorTable.setSortKeys(sortKeys);
         this.add(scrollPane);
     }
     public void addRow(String[] row, Sintoma sintoma){
@@ -41,7 +47,7 @@ public class SintomasTableJPanel extends JPanel {
     }
     private void llenarTabla(){
         for (Sintoma sintoma : sintomas) {
-            table.addRow(new String[]{sintoma.toString(), sintoma.getClass().getName().split("\\.")[1]});
+            table.insertRow(0, new String[]{sintoma.toString(), sintoma.getClass().getName().split("\\.")[1]});
         }
     }
     private void limpiar(){

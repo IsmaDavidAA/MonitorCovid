@@ -12,14 +12,13 @@ public class SintomasTablaJPanel extends JPanel {
     private JTable sintomasTable;
     private JScrollPane scrollPane;
     private DefaultTableModel table ;
-    public SintomasTablaJPanel(Sintomas sintomas) {
-        sintomasTable = new JTable();
-        sintomasTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    private Sintomas sintomas;
+    public SintomasTablaJPanel() {
         table = new DefaultTableModel();
+        sintomasTable = new JTable();
         table.addColumn("Sintomas");
         table.addColumn("Categoria");
 
-        actualizar(sintomas);
         sintomasTable = new JTable(table);
         this.sintomasTable.setEnabled(false);
         TableColumnModel columnModel = sintomasTable.getColumnModel();
@@ -28,17 +27,17 @@ public class SintomasTablaJPanel extends JPanel {
 
         TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(table);
         sintomasTable.setRowSorter(sorTable);
-//        TableRowSorter<DefaultTableModel> sortTable = new TableRowSorter<DefaultTableModel>(table);
-
         scrollPane = new JScrollPane(sintomasTable);
         this.add(scrollPane);
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        scrollPane.setBounds(0, 0, 400,230);
+        scrollPane.setBounds(0, 0, 420,230);
+        actualizar(sintomas);
     }
     public void actualizar(Sintomas sintomas) {
         limpiar();
+        this.sintomas = sintomas;
         for (Sintoma sintoma: sintomas){
             table.addRow(new String[]{sintoma.toString(), sintoma.getClass().getName().split("\\.")[1]});
         }

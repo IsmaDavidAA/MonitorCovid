@@ -12,7 +12,7 @@ public class Sintomas implements Iterable<Sintoma>, Serializable {
     private Set<Sintoma> sintomas;
 
     public Sintomas() {
-        sintomas = new TreeSet<>();
+        sintomas = new HashSet<>();
     }
 
     public void add(Sintoma s) {

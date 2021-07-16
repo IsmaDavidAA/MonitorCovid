@@ -8,7 +8,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.Set;
 
 public class RegistrarSintomasJPanel extends JPanel {
     private final JTable sintomasTable;

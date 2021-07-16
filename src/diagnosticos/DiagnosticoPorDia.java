@@ -36,7 +36,7 @@ public class DiagnosticoPorDia extends FuncionDiagnostico {
             fase.reiniciar();
         }
 
-        if(fase.terminada()){
+        if(fase.alcanzo()){
             fase = new Fase("SegundaFase", 5);
         }
         datosFase.guardarDatosFase(fase);

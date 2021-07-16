@@ -4,7 +4,6 @@ import monitor.*;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class DiagnosticoCompleto extends FuncionDiagnostico {
@@ -18,37 +17,31 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
         datosFase = new DatosFase();
         fase = datosFase.leerDatosFase();
         totalPorFases  = (new ContadorSintomas().sacarTotalPorFase(sintomas));
-        examinarFases();
     }
 
 
     @Override
     public int diagnostico(Registros registros) {
-        int cantSintomas = 0;
-        for(Registro registro: registros){
-            if(cantSintomas < 1){
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(registro.getFecha());
-                calendar.add(Calendar.DATE, -1);
-                Date yesterday = calendar.getTime();
-                fase.setUltimoRegistro(yesterday);
-                cantSintomas++;
-                break;
-            }
-        }
+        int contadorDias = 0;
         fase.reiniciar();
 
         for(Registro registro: registros){
             if(esMayor(fase.getNombre(), registro.getSintomas())){
                 fase.inc(registro.getFecha());
+                contadorDias++;
+                if(fase.alcanzo()){
+                    fase = new Fase("SegundaFase", 4);
+                }
             }else{
                 fase.reiniciar();
             }
+
         }
-        int resultado = examinarFases();
         datosFase.guardarDatosFase(fase);
-        return resultado;
+        return contadorDias;
     }
+
+
 
     private boolean esMayor(String nombreFase, Sintomas sintomas){
         int contador=0;
@@ -63,16 +56,6 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
         }
         return esMayor;
     }
-
-    private int examinarFases(){
-        int estado = 0;
-        if(fase.getNombre().equals("PrimeraFase")){
-           estado = fase.getDia();
-        }else{
-            estado = fase.getDuracionDias() + 1;
-        }
-        return estado;
-    }
 }
 
 // registros()->stack
@@ -82,8 +65,3 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
 //    0 1 0 1 1 1 0 0 1 0 1 0 1
 // Segundo fase = 5
 //    0 0 0 0 0 0 1 1 1 1 1 0 0
-//
-//
-//
-//
-//

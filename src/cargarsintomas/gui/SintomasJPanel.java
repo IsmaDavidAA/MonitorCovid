@@ -82,7 +82,7 @@ public class SintomasJPanel extends JPanel implements ActionListener{
     }
 
     private void agregarSintoma() {
-        boolean valido = validador.validar(nombreSintomaTextField.getText());
+        boolean valido = validador.validar(nombreSintomaTextField.getText(), gestorArchivoSintomas.getSintomasArchivo());
         if (valido) {
             tipoSintoma = (String) tiposSintomasComboBox.getSelectedItem();
             String sintomaValidado = validador.getValidado(nombreSintomaTextField.getText());

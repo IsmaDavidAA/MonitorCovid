@@ -54,8 +54,8 @@ public class Fase implements Serializable {
     public void reiniciar(){
         dia = 0;
     }
-    public boolean terminada(){
-        return dia >= duracionDias;
+    public boolean alcanzo(){
+        return dia > duracionDias;
     }
     private boolean diaAnterior(Date hoyDate) {
         boolean res = false;

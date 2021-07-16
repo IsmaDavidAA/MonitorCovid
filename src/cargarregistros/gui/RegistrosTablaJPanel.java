@@ -49,11 +49,7 @@ public class RegistrosTablaJPanel extends JPanel {
                 sintomasTablaJPanel.actualizar(registrosMap.get(registrosTable.getValueAt(row,col)).getSintomas());
             }
         });
-        if(!registros.isEmpty()) {
-            sintomasTablaJPanel = new SintomasTablaJPanel(registros.peek().getSintomas());
-        }else{
-            sintomasTablaJPanel = new SintomasTablaJPanel(new Sintomas());
-        }
+        sintomasTablaJPanel = new SintomasTablaJPanel();
         registrosTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         tableScollPanel = new JScrollPane(registrosTable);
         TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(dataTable);
@@ -68,6 +64,8 @@ public class RegistrosTablaJPanel extends JPanel {
         registrosMap.put(registro.getFecha(), registro);
         registros.push(registro);
         dataTable.insertRow(0, new Date[]{registro.getFecha()});
+        registrosTable.getSelectionBackground();
+        repaint();
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -77,17 +75,30 @@ public class RegistrosTablaJPanel extends JPanel {
         sintomasTablaJPanel.setBounds(5,155,420,230);
         limpiar();
         llenarTabla();
+        vista();
     }
 
     private void llenarTabla(){
         for(Registro r: registros){
             dataTable.insertRow(0,new Date[]{r.getFecha()});
         }
+        if(!registros.isEmpty()) {
+            registrosTable.setRowSelectionInterval(0, 0);
+        }
     }
     private void limpiar(){
         int rowCount = dataTable.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {
             dataTable.removeRow(i);
+        }
+    }
+
+    private void vista(){
+        if(!registros.isEmpty()){
+            Registro registro = registros.peek();
+            sintomasTablaJPanel.actualizar(registro.getSintomas());
+        }else{
+            sintomasTablaJPanel.actualizar(new Sintomas());
         }
     }
 }
