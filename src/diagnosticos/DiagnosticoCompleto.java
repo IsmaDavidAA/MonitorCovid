@@ -2,6 +2,8 @@ package diagnosticos;
 
 import monitor.*;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,9 +26,23 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
     public int diagnostico(Registros registros) {
         int cantSintomas = 0;
         for(Registro registro: registros){
+            if(cantSintomas < 1){
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(registro.getFecha());
+                calendar.add(Calendar.DATE, -1);
+                Date yesterday = calendar.getTime();
+                fase.setUltimoRegistro(yesterday);
+                cantSintomas++;
+                System.out.println(yesterday + "origen");
+                break;
+            }
+        }
+        for(Registro registro: registros){
+            System.out.println(registro.getFecha()+"--------------------------");
             if(esMayor(fase.getNombre(), registro.getSintomas())){ //si supera el 50%
                 fase.inc(registro.getFecha()); //incrementar fase || reiniciar
-                System.out.println(fase.getDia());
+            }else{
+                fase.reiniciar();
             }
             if(fase.terminada()){
                 fase = new Fase("SegundaFase", 4);
@@ -34,6 +50,7 @@ public class DiagnosticoCompleto extends FuncionDiagnostico {
         }
 //        int resultado = examinarFases();
         System.out.println(fase.getNombre()+" : " + fase.getDia());
+        datosFase.guardarDatosFase(fase);
         return 0;
     }
 

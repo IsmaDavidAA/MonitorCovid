@@ -38,18 +38,15 @@ public class Fase implements Serializable {
     }
 
     public void inc(Date date){
-        if(fechaUltimoRegistro == null){
-            this.fechaUltimoRegistro = new Date();
-            dia++;
-        }else{
-            if(diaAnterior(date)){
+        if(diaAnterior(date)){
                 dia++;
                 fechaUltimoRegistro = date;
-            }else{
+                System.out.println(fechaUltimoRegistro + " este es ultimo " + dia);
+        }else{
+            fechaUltimoRegistro = date;
                 reiniciar();
-            }
-        }
 
+        }
     }
 
     public void setUltimoRegistro(Date date){
@@ -57,6 +54,7 @@ public class Fase implements Serializable {
     }
     public void reiniciar(){
         dia = 0;
+        System.out.println(fechaUltimoRegistro + " Reiniciamos");
     }
     public boolean terminada(){
         return dia >= duracionDias;
@@ -71,6 +69,6 @@ public class Fase implements Serializable {
         if (hoy.get(Calendar.DAY_OF_MONTH) == ayer.get(Calendar.DAY_OF_MONTH)) {
             res = true;
         }
-    return res;
+    return true;
 }
 }
