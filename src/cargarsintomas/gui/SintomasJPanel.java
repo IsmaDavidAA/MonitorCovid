@@ -28,6 +28,7 @@ public class SintomasJPanel extends JPanel implements ActionListener{
     public SintomasJPanel(RegistrarSintomaGUI registrarSintomasFrame){
         this.registrarSintomasFrame = registrarSintomasFrame;
         crearComponentes();
+
         mainPanel = new JPanel();
         tablePanel = new SintomasTableJPanel(gestorArchivoSintomas.getSintomasArchivo());
         finalizarButton = new JButton("Finalizar");
@@ -52,6 +53,7 @@ public class SintomasJPanel extends JPanel implements ActionListener{
         mainPanel.add(mensajeConfirmacionJPanel);
         add(mainPanel);
         tipoSintoma = (String) tiposSintomasComboBox.getSelectedItem();
+        mostrarNuevoMensaje("", Color.CYAN);
     }
 
     private void crearComponentes(){
@@ -76,7 +78,7 @@ public class SintomasJPanel extends JPanel implements ActionListener{
         tiposSintomasComboBox.setBounds(5, 5, 110, 25);
         nombreSintomaTextField.setBounds(105, 45, 190, 25);
         addSintomaButton.setBounds(297, 45, 120, 25);
-        finalizarButton.setBounds(300, 560, 100, 30);
+        finalizarButton.setBounds(370, 530, 116, 30);
         tablePanel.setBounds(5, 130, 580, 440);
         mensajeConfirmacionJPanel.setBounds(10, 80, 450, 30);
     }

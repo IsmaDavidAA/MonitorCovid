@@ -7,7 +7,7 @@ public class RegistrarSintomaGUI extends JFrame{
     private SintomasJPanel sintomasJPanel;
     public RegistrarSintomaGUI() {
         this.setLocation(200, 50);
-        this.setPreferredSize(new Dimension(600, 660));
+        this.setPreferredSize(new Dimension(520, 640));
         sintomasJPanel = new SintomasJPanel(RegistrarSintomaGUI.this);
         this.add(sintomasJPanel);
         this.pack();

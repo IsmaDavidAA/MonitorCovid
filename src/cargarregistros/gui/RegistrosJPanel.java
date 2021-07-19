@@ -47,6 +47,7 @@ public class RegistrosJPanel extends JPanel {
         cargarComponentes();
         eventoOyenteAgregarSintoma();
         finalizar(registrarRegistroGUI);
+        mostrarNuevoMensaje("", Color.CYAN);
     }
     private void cargarComponentes(){
         finalizarPanel.add(finalizarButton);
@@ -67,8 +68,8 @@ public class RegistrosJPanel extends JPanel {
         addRegistroPanel.setBounds(10, 10, 200, 70);
         finalizarButton.setBounds(0, 0, 160, 25);
         finalizarPanel.setBounds(700,550, 170, 40);
-        tablePanel.setBounds(10, 110, 500, 420);
-        registrosTablaJPanel.setBounds(520, 110, 550,420);
+        tablePanel.setBounds(10, 120, 500, 420);
+        registrosTablaJPanel.setBounds(520, 80, 550,420);
         mensajeConfirmacionJPanel.setBounds(10, 80, 450, 30);
     }
     private void eventoOyenteAgregarSintoma() {

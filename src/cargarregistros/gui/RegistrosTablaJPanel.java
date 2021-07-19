@@ -69,7 +69,7 @@ public class RegistrosTablaJPanel extends JPanel {
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        registrosText.setBounds(200, 5, 200, 30);
+        registrosText.setBounds(185, 5, 200, 30);
         sintomasRegistradosJPanel.setBounds(0, 40, 500, 420);
         tableScollPanel.setBounds(5, 5, 420,150);
         sintomasTablaJPanel.setBounds(5,155,420,230);

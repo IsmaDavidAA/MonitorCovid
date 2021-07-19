@@ -16,7 +16,7 @@ public class SintomasTablaJPanel extends JPanel {
     public SintomasTablaJPanel() {
         table = new DefaultTableModel();
         sintomasTable = new JTable();
-        table.addColumn("Sintomas");
+        table.addColumn("Historial de sintomas");
         table.addColumn("Categoria");
 
         sintomasTable = new JTable(table);
