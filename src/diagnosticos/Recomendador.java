@@ -5,7 +5,7 @@ import monitor.Fase;
 import java.util.HashMap;
 
 public class Recomendador {
-    private Fase fase;
+    private final Fase fase;
     private HashMap<String,String[]> recomendaciones;
     public Recomendador(Fase fase){
         this.fase = fase;
@@ -18,7 +18,7 @@ public class Recomendador {
     }
 
     public String recomendacion(){
-        String recomendacion = "";
+        String recomendacion;
         if(fase.getDia() >= recomendaciones.get(fase.getNombre()).length){
             recomendacion = " ALTO RIESGO!! ESTAMOS LLAMANDO A UNA AMBULANCIA POR USTED";
         }else{

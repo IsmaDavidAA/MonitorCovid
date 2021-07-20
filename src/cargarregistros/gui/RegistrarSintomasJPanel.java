@@ -2,6 +2,7 @@ package cargarregistros.gui;
 
 import monitor.Sintoma;
 import monitor.Sintomas;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -17,22 +18,23 @@ public class RegistrarSintomasJPanel extends JPanel {
     private final Sintomas sintomas;
     private final DefaultTableModel table;
     private final int columnaDeCheck;
-    public RegistrarSintomasJPanel(Sintomas sintomas){
+
+    public RegistrarSintomasJPanel(Sintomas sintomas) {
         this.sintomas = sintomas;
         columnaDeCheck = 2;
         table = defaultTableModelLastColumnEditable();
-        sintomasTable =  tablaSintSelecOrdenable(table);
+        sintomasTable = tablaSintSelecOrdenable(table);
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(sintomasTable);
         this.add(scrollPane);
         llenarTabla();
     }
 
-    private DefaultTableModel defaultTableModelLastColumnEditable(){
-        DefaultTableModel table = new DefaultTableModel(){
+    private DefaultTableModel defaultTableModelLastColumnEditable() {
+        DefaultTableModel table = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable(int row, int column){
-                return column==columnaDeCheck;
+            public boolean isCellEditable(int row, int column) {
+                return column == columnaDeCheck;
             }
         };
         table.addColumn("Sintoma");
@@ -41,8 +43,8 @@ public class RegistrarSintomasJPanel extends JPanel {
         return table;
     }
 
-    private JTable tablaSintSelecOrdenable(DefaultTableModel defaultTableModel){
-        JTable sintomasT =  new JTable(defaultTableModel);
+    private JTable tablaSintSelecOrdenable(DefaultTableModel defaultTableModel) {
+        JTable sintomasT = new JTable(defaultTableModel);
         addCheckBox(columnaDeCheck, sintomasT);
         sintomasT.setEditingColumn(columnaDeCheck);
         TableColumnModel columnModel = sintomasT.getColumnModel();
@@ -58,36 +60,43 @@ public class RegistrarSintomasJPanel extends JPanel {
         return sintomasT;
     }
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.setBounds(10, 120, 500, 420);
-        scrollPane.setBounds(0,0, 480, 400);
+        scrollPane.setBounds(0, 0, 480, 400);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
+
     private void addCheckBox(int column, JTable table) {
         TableColumn tc = table.getColumnModel().getColumn(column);
         tc.setCellEditor(table.getDefaultEditor(Boolean.class));
         tc.setCellRenderer(table.getDefaultRenderer(Boolean.class));
     }
 
-    public Sintomas getSintomasSeleccionados(){
+    public Sintomas getSintomasSeleccionados() {
         Sintomas sintomasParaGuardar = new Sintomas();
+        boolean existenSintomas = false;
         for (int i = 0; i < sintomasTable.getRowCount(); i++) {
-            if  ( estaMarcado(i, columnaDeCheck, sintomasTable)) {
+            if (estaMarcado(i, columnaDeCheck, sintomasTable)) {
                 sintomasParaGuardar.add((Sintoma) sintomasTable.getValueAt(i, 0));
+                existenSintomas = true;
             }
+        }
+        if(!existenSintomas){
+            sintomasParaGuardar=null;
         }
         return sintomasParaGuardar;
     }
 
     private boolean estaMarcado(int row, int column, JTable table) {
         boolean marcado = false;
-        if(table.getValueAt(row, column) != null) {
+        if (table.getValueAt(row, column) != null) {
             marcado = (boolean) table.getValueAt(row, column);
         }
         return marcado;
     }
-    private void llenarTabla(){
+
+    private void llenarTabla() {
         for (Sintoma sintoma : sintomas) {
             table.addRow(new Object[]{sintoma, sintoma.getClass().getName().split("\\.")[1]});
         }

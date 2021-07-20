@@ -2,20 +2,19 @@ package cargarregistros.util;
 
 import monitor.Registro;
 import monitor.Registros;
-import monitor.Sintomas;
 import java.io.*;
-import java.util.*;
 
 public class GestorArchivoRegistros {
     private String archivoRegistros;
+
     public GestorArchivoRegistros() {
-        archivoRegistros = "IsmaRegistros.dat";
+        archivoRegistros = "./IsmaRegistros.dat";
         verificarExistenciaArchivo();
     }
 
-    public void verificarExistenciaArchivo(){
+    public void verificarExistenciaArchivo() {
         File fileSintomas = new File(archivoRegistros);
-        if(!fileSintomas.exists()){
+        if (!fileSintomas.exists()) {
             try {
                 fileSintomas.createNewFile();
             } catch (IOException e) {
@@ -23,25 +22,26 @@ public class GestorArchivoRegistros {
             }
         }
     }
+
     public boolean guardarRegistro(Registro registro) {
-        boolean guardado=false;
+        boolean guardado = false;
         Registros registros = getRegistrosArchivo();
         ObjectOutputStream file = null;
         try {
-            registros.push(registro);
-            file = new ObjectOutputStream(new FileOutputStream(archivoRegistros));
-            file.writeObject(registros);
-            file.close();
-            guardado = true;
+            if(registro.getSintomas() != null) {
+                registros.push(registro);
+                file = new ObjectOutputStream(new FileOutputStream(archivoRegistros));
+                file.writeObject(registros);
+                file.close();
+                guardado = true;
+            }
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
         }
         return guardado;
     }
 
-
-
-    public Registros getRegistrosArchivo(){
+    public Registros getRegistrosArchivo() {
         Registros registros = new Registros();
         ObjectInputStream file = null;
         try {
@@ -56,7 +56,7 @@ public class GestorArchivoRegistros {
     }
 
 
-    public Registro getUltimoRegistro(){
+    public Registro getUltimoRegistro() {
         Registros registros = new Registros();
         Registro ultimo = null;
         ObjectInputStream file = null;
