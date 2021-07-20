@@ -1,18 +1,12 @@
-package cargarsintomas.gui;
+package cargarsintomas.util;
 
-import cargarsintomas.GestorArchivoSintomas;
 import monitor.Sintoma;
 import monitor.Sintomas;
 
 public class Validador {
-//    GestorArchivoSintomas gestorArchivoSintomas;
-    public Validador(){
-//        gestorArchivoSintomas = new GestorArchivoSintomas();
-    }
 
-    public boolean validar(String texto, Sintomas sintomas){
+    public boolean esValido(String texto, Sintomas sintomas){
         boolean valido = true;
-//        Sintomas listaTexto = sintomas;
         texto = texto.replaceAll(" ","");
         texto = texto.toUpperCase();
 
@@ -28,9 +22,9 @@ public class Validador {
         return valido;
     }
 
-    public String getValidado(String nombreSintoma){
+    public String getTextoValidado(String nombreSintoma){
         String nombreSintomaValidado = nombreSintoma.toUpperCase();
-        nombreSintomaValidado.replaceAll("^\\p{Zs}+|\\p{Zs}+$", "");
+        nombreSintomaValidado = nombreSintomaValidado.replaceAll("^\\p{Zs}+|\\p{Zs}+$", "");
         return nombreSintomaValidado;
     }
 
@@ -47,5 +41,4 @@ public class Validador {
         }
         return tieneSoloLetras;
     }
-
 }

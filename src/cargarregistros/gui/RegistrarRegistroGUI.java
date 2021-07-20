@@ -7,48 +7,48 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class RegistrarRegistroGUI extends JFrame {
-    private Sintomas sintomas;
-    private RegistrosJPanel registrosJPanelLabel;
+    private final RegistrosJPanel registrosJPanelLabel;
     public RegistrarRegistroGUI(Sintomas sintomas) {
         this.setLocation(200, 50);
-        this.setPreferredSize(new Dimension(1100, 620));
-        this.sintomas = sintomas;
+        this.setPreferredSize(new Dimension(1000, 620));
         registrosJPanelLabel = new RegistrosJPanel(RegistrarRegistroGUI.this, sintomas);
         this.add(registrosJPanelLabel);
         this.pack();
         this.setResizable(false);
         this.setTitle("Registrar registros");
         this.setVisible(true);
-        finalizar(this);
-        detenerHilo(this);
+        finalizar();
+        sincronizar();
     }
 
-    private void detenerHilo(JFrame frame){
-        synchronized(frame){
+    private void sincronizar(){
+        synchronized(this){
             try{
-                frame.wait();
+                this.wait();
             }
             catch(InterruptedException ex){
+                //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
             }
         }
     }
 
-    private void finalizar(JFrame frame){
+    private void finalizar(){
         this.addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent we){
-                closeWindow(frame);
+                closeWindow();
             }
         });
     }
 
-    private void closeWindow(JFrame frame){
+    private void closeWindow(){
         try {
-            synchronized(frame){
-                frame.notify();
+            synchronized(this){
+                this.notify();
             }
-            frame.dispose();
+            this.dispose();
         } catch (Exception e){
+            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
         }
     }
 }

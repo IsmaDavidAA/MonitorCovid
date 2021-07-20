@@ -1,6 +1,7 @@
 package cargarregistros;
 
 import cargarregistros.gui.RegistrarRegistroGUI;
+import cargarregistros.util.GestorArchivoRegistros;
 import monitor.Registro;
 import monitor.Registros;
 import monitor.Sintomas;

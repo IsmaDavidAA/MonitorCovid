@@ -1,4 +1,4 @@
-package cargarregistros;
+package cargarregistros.util;
 
 import monitor.Registro;
 import monitor.Registros;
@@ -23,9 +23,8 @@ public class GestorArchivoRegistros {
             }
         }
     }
-    public boolean guardarRegistro(Sintomas sintomas, Date fecha) {
+    public boolean guardarRegistro(Registro registro) {
         boolean guardado=false;
-        Registro registro = new Registro(fecha, sintomas);
         Registros registros = getRegistrosArchivo();
         ObjectOutputStream file = null;
         try {

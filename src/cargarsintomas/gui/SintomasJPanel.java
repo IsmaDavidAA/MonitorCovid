@@ -1,9 +1,8 @@
 package cargarsintomas.gui;
 
-import cargarsintomas.GestorArchivoSintomas;
-import cargarsintomas.GestorPaquete;
-import monitor.Sintoma;
-import org.w3c.dom.Text;
+import cargarsintomas.util.GestorArchivoSintomas;
+import cargarsintomas.util.GestorPaquete;
+import cargarsintomas.util.Validador;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,106 +11,97 @@ import java.awt.event.ActionListener;
 
 public class SintomasJPanel extends JPanel implements ActionListener{
     private final JPanel mainPanel;
-    private final SintomasTableJPanel tablePanel;
+    private final SintomasTableJPanel sintomasTableJPanel;
     private final JButton finalizarButton;
-    private final JComboBox<String> tiposSintomasComboBox;
+    private final JComboBox<String> tiposSintomaComboBox;
     private final JTextField nombreSintomaTextField;
-    private final JButton addSintomaButton;
-    private final JLabel mensajeDeConfirmacion;
-    private final JPanel mensajeConfirmacionJPanel;
-    private final JLabel agregarText;
-    private GestorArchivoSintomas gestorArchivoSintomas;
-    private GestorPaquete gestorPaquete;
-    private Validador validador;
-    private String tipoSintoma;
-    private RegistrarSintomaGUI registrarSintomasFrame;
+    private final JButton agregarSintomaButton;
+    private final JLabel subtituloAgregarSintomaJLabel;
+    private final GestorArchivoSintomas gestorArchivoSintomas;
+    private final RegistrarSintomaGUI registrarSintomasFrame;
+    private final MensajeJPanel mensajeJPanel;
     public SintomasJPanel(RegistrarSintomaGUI registrarSintomasFrame){
         this.registrarSintomasFrame = registrarSintomasFrame;
-        crearComponentes();
-
-        mainPanel = new JPanel();
-        tablePanel = new SintomasTableJPanel(gestorArchivoSintomas.getSintomasArchivo());
-        finalizarButton = new JButton("Finalizar");
-        finalizarButton.addActionListener(this);
-        nombreSintomaTextField = new JTextField();
-        tiposSintomasComboBox = new JComboBox<>();
-        addSintomaButton = new JButton("Agregar");
-        addSintomaButton.addActionListener(this);
-        mensajeDeConfirmacion = new JLabel("");
-        mensajeConfirmacionJPanel = new JPanel();
-        agregarText = new JLabel("Nombre Sintoma:");
-        mensajeConfirmacionJPanel.add(mensajeDeConfirmacion);
-        for(String s: gestorPaquete.getTiposDeSintomas()){
-            tiposSintomasComboBox.addItem(s);
-        }
-        mainPanel.add(agregarText);
-        mainPanel.add(tiposSintomasComboBox);
-        mainPanel.add(nombreSintomaTextField);
-        mainPanel.add(addSintomaButton);
-        mainPanel.add(finalizarButton);
-        mainPanel.add(tablePanel);
-        mainPanel.add(mensajeConfirmacionJPanel);
-        add(mainPanel);
-        tipoSintoma = (String) tiposSintomasComboBox.getSelectedItem();
-        mostrarNuevoMensaje("", Color.CYAN);
-    }
-
-    private void crearComponentes(){
         gestorArchivoSintomas = new GestorArchivoSintomas();
-        gestorPaquete = new GestorPaquete();
-        validador = new Validador();
+        mainPanel = new JPanel();
+        sintomasTableJPanel = new SintomasTableJPanel(gestorArchivoSintomas.getSintomasArchivo());
+        finalizarButton = new JButton("Finalizar");
+        nombreSintomaTextField = new JTextField();
+        tiposSintomaComboBox = new JComboBox<>();
+        agregarSintomaButton = new JButton("Agregar");
+        finalizarButton.addActionListener(this);
+        agregarSintomaButton.addActionListener(this);
+        mensajeJPanel = new MensajeJPanel();
+        subtituloAgregarSintomaJLabel = new JLabel("Nombre Sintoma:");
+        this.add(mensajeJPanel);
+        llenarComboBox();
+        agregarComponentes();
     }
-    private void finalizar(JFrame frame){
+
+    private void agregarComponentes(){
+        mainPanel.add(subtituloAgregarSintomaJLabel);
+        mainPanel.add(tiposSintomaComboBox);
+        mainPanel.add(nombreSintomaTextField);
+        mainPanel.add(agregarSintomaButton);
+        mainPanel.add(finalizarButton);
+        mainPanel.add(sintomasTableJPanel);
+        mainPanel.add(mensajeJPanel);
+        add(mainPanel);
+    }
+    private void llenarComboBox(){
+        GestorPaquete gestorPaquete = new GestorPaquete();
+        for(String s: gestorPaquete.getTiposDeSintomas()){
+            tiposSintomaComboBox.addItem(s);
+        }
+    }
+    private void finalizar(){
         try {
-            synchronized(frame){
-                frame.notify();
+            synchronized(registrarSintomasFrame){
+                registrarSintomasFrame.notify();
             }
-                frame.dispose();
-            } catch (Exception e){
-            }
+            registrarSintomasFrame.dispose();
+        } catch (Exception e){
+            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+        }
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         mainPanel.setBounds(5,5,600,650);
-        agregarText.setBounds(5, 45, 100, 25);
-        tiposSintomasComboBox.setBounds(5, 5, 110, 25);
+        subtituloAgregarSintomaJLabel.setBounds(5, 45, 100, 25);
+        tiposSintomaComboBox.setBounds(5, 5, 110, 25);
         nombreSintomaTextField.setBounds(105, 45, 190, 25);
-        addSintomaButton.setBounds(297, 45, 120, 25);
+        agregarSintomaButton.setBounds(297, 45, 120, 25);
         finalizarButton.setBounds(370, 530, 116, 30);
-        tablePanel.setBounds(5, 130, 580, 440);
-        mensajeConfirmacionJPanel.setBounds(10, 80, 450, 30);
+        mensajeJPanel.setBounds(10, 80, 450, 40);
     }
 
     private void agregarSintoma() {
-        boolean valido = validador.validar(nombreSintomaTextField.getText(), gestorArchivoSintomas.getSintomasArchivo());
+        Validador validador = new Validador();
+        boolean valido = validador.esValido(nombreSintomaTextField.getText(), gestorArchivoSintomas.getSintomasArchivo());
+        String tipoSintoma;
         if (valido) {
-            tipoSintoma = (String) tiposSintomasComboBox.getSelectedItem();
-            String sintomaValidado = validador.getValidado(nombreSintomaTextField.getText());
-            boolean agregado = gestorArchivoSintomas.guardarSintoma(sintomaValidado, tipoSintoma);
+            tipoSintoma = (String) tiposSintomaComboBox.getSelectedItem();
+            String nombreSintomaValidado = validador.getTextoValidado(nombreSintomaTextField.getText());
+            boolean agregado = gestorArchivoSintomas.guardarSintoma(nombreSintomaValidado, tipoSintoma);
             if (agregado) {
-                mostrarNuevoMensaje("Agregado con exito!!", Color.GREEN);
-                tablePanel.addRow(new String[]{sintomaValidado, tipoSintoma }, gestorArchivoSintomas.crearSintoma(sintomaValidado, tipoSintoma));
+                mensajeJPanel.actualizarMensaje("Agregado con exito!!",1);
+                sintomasTableJPanel.addRow(new String[]{nombreSintomaValidado, tipoSintoma }, gestorArchivoSintomas.crearSintoma(nombreSintomaValidado, tipoSintoma));
             } else {
-                mostrarNuevoMensaje("Lo sentimos, no se pudo agregar a la lista de sintomas", Color.RED);
+                mensajeJPanel.actualizarMensaje("Lo sentimos, no se pudo agregar a la lista de sintomas", 2);
             }
         } else {
-            mostrarNuevoMensaje("Lo sentimos, no se pudo agregar por que el nombre no es valido", Color.RED);
+            mensajeJPanel.actualizarMensaje("Lo sentimos, no se pudo agregar por que el nombre no es valido", 2);
         }
-    }
-
-    private void mostrarNuevoMensaje(String mensaje, Color color){
-        mensajeConfirmacionJPanel.setBackground(color);
-        mensajeDeConfirmacion.setText(mensaje);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object botonPulsado = e.getSource();
-        if (botonPulsado == addSintomaButton) {
+        if (botonPulsado == agregarSintomaButton) {
             agregarSintoma();
         } else if (botonPulsado == finalizarButton){
-            finalizar(registrarSintomasFrame);
+            finalizar();
         }
     }
 }

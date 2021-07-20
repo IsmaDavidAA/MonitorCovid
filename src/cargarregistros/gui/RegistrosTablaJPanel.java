@@ -15,89 +15,83 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrosTablaJPanel extends JPanel {
-    private JScrollPane tableScollPanel;
-    private SintomasTablaJPanel sintomasTablaJPanel;
-    private Map<Date, Registro> registrosMap;
-    private JTable registrosTable;
-    private DefaultTableModel dataTable;
-    private Registros registros;
-    private JPanel sintomasRegistradosJPanel;
-    private JLabel registrosText;
-    public RegistrosTablaJPanel(Registros registros){
-        sintomasRegistradosJPanel = new JPanel();
+    private final JScrollPane fechasJScrollPanel;
+    private final SintomasTablaJPanel sintomasTablaJPanel;
+    private final Map<Date, Registro> registrosMap;
+    private final DefaultTableModel tableFechas;
+    private final Registros registros;
+    private final JPanel sintomasRegistradosJPanel;
+    private final JLabel registrosText;
+    private final JTable registrosTable;
+    public RegistrosTablaJPanel(Registros registros) {
         this.registros = registros;
+        sintomasRegistradosJPanel = new JPanel();
         registrosText = new JLabel("Registros");
         registrosMap = new HashMap<>();
-        for(Registro registro:registros){
+        for (Registro registro : registros) {
             registrosMap.put(registro.getFecha(), registro);
         }
-        registrosTable = new JTable();
-
-        dataTable = new DefaultTableModel(){
-            @Override
-            public boolean isCellEditable(int row, int column){
-                return column==1? true : false;
-            }
-        };
-        dataTable.addColumn("Fecha");
-
-        registrosTable = new JTable(dataTable);
-        registrosTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e){
-                int row=registrosTable.rowAtPoint(e.getPoint());
-                int col= registrosTable.columnAtPoint(e.getPoint());
-                sintomasTablaJPanel.actualizar(registrosMap.get(registrosTable.getValueAt(row,col)).getSintomas());
-            }
-        });
+        tableFechas = new DefaultTableModel();
+        tableFechas.addColumn("Fecha registros");
+        registrosTable = registrosTableOrdenado(tableFechas);
+        fechasJScrollPanel = new JScrollPane();
+        fechasJScrollPanel.setViewportView(registrosTable);
         sintomasTablaJPanel = new SintomasTablaJPanel();
-        registrosTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        tableScollPanel = new JScrollPane(registrosTable);
-        TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(dataTable);
-        registrosTable.setRowSorter(sorTable);
-        sintomasRegistradosJPanel.add(tableScollPanel);
+        agregarComponentes();
+        llenarTabla();
+    }
+
+    private void agregarComponentes(){
+        sintomasRegistradosJPanel.add(fechasJScrollPanel);
         sintomasRegistradosJPanel.add(sintomasTablaJPanel);
         this.add(sintomasRegistradosJPanel);
         this.add(registrosText);
     }
 
-    public void addRow(Registro registro){
+    private JTable registrosTableOrdenado(DefaultTableModel defaultTableModel){
+        JTable registrosT = new JTable(defaultTableModel);
+        registrosT.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int row = registrosT.rowAtPoint(e.getPoint());
+                int col = registrosT.columnAtPoint(e.getPoint());
+                Date date = (Date) registrosT.getValueAt(row, col);
+                sintomasTablaJPanel.actualizar(registrosMap.get(date).getSintomas());
+            }
+        });
+        TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(defaultTableModel);
+        registrosT.setRowSorter(sorTable);
+        return registrosT;
+    }
+
+    public void addRow(Registro registro) {
         registrosMap.put(registro.getFecha(), registro);
         registros.push(registro);
-        dataTable.insertRow(0, new Date[]{registro.getFecha()});
-        registrosTable.getSelectionBackground();
+        tableFechas.insertRow(0, new Date[]{registro.getFecha()});
         repaint();
     }
-    public void paintComponent(Graphics g){
+
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         registrosText.setBounds(185, 5, 200, 30);
         sintomasRegistradosJPanel.setBounds(0, 40, 500, 420);
-        tableScollPanel.setBounds(5, 5, 420,150);
-        sintomasTablaJPanel.setBounds(5,155,420,230);
-        limpiar();
-        llenarTabla();
-        vista();
+        fechasJScrollPanel.setBounds(5, 5, 420, 150);
+        sintomasTablaJPanel.setBounds(5, 155, 420, 230);
+        fechasJScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        actualizarAlUltimo();
     }
 
-    private void llenarTabla(){
-        for(Registro r: registros){
-            dataTable.insertRow(0,new Date[]{r.getFecha()});
-        }
-        if(!registros.isEmpty()) {
-            registrosTable.setRowSelectionInterval(0, 0);
-        }
-    }
-    private void limpiar(){
-        int rowCount = dataTable.getRowCount();
-        for (int i = rowCount - 1; i >= 0; i--) {
-            dataTable.removeRow(i);
+    private void llenarTabla() {
+        for (Registro r : registros) {
+            tableFechas.insertRow(0, new Date[]{r.getFecha()});
         }
     }
 
-    private void vista(){
-        if(!registros.isEmpty()){
+    private void actualizarAlUltimo() {
+        if (!registros.isEmpty()) {
             Registro registro = registros.peek();
             sintomasTablaJPanel.actualizar(registro.getSintomas());
-        }else{
+            registrosTable.setRowSelectionInterval(0, 0);
+        } else {
             sintomasTablaJPanel.actualizar(new Sintomas());
         }
     }

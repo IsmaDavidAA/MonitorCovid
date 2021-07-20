@@ -8,6 +8,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegistrarSintomasJPanel extends JPanel {
     private final JTable sintomasTable;
@@ -18,33 +20,49 @@ public class RegistrarSintomasJPanel extends JPanel {
     public RegistrarSintomasJPanel(Sintomas sintomas){
         this.sintomas = sintomas;
         columnaDeCheck = 2;
-        table = new DefaultTableModel(){
+        table = defaultTableModelLastColumnEditable();
+        sintomasTable =  tablaSintSelecOrdenable(table);
+        scrollPane = new JScrollPane();
+        scrollPane.setViewportView(sintomasTable);
+        this.add(scrollPane);
+        llenarTabla();
+    }
+
+    private DefaultTableModel defaultTableModelLastColumnEditable(){
+        DefaultTableModel table = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column){
-                return column==columnaDeCheck? true : false;
+                return column==columnaDeCheck;
             }
         };
         table.addColumn("Sintoma");
         table.addColumn("Categoria");
         table.addColumn("Agregado");
-        sintomasTable =  new JTable(table);
-        addCheckBox(columnaDeCheck, sintomasTable);
-        sintomasTable.setEditingColumn(columnaDeCheck);
-        TableColumnModel columnModel = sintomasTable.getColumnModel();
+        return table;
+    }
+
+    private JTable tablaSintSelecOrdenable(DefaultTableModel defaultTableModel){
+        JTable sintomasT =  new JTable(defaultTableModel);
+        addCheckBox(columnaDeCheck, sintomasT);
+        sintomasT.setEditingColumn(columnaDeCheck);
+        TableColumnModel columnModel = sintomasT.getColumnModel();
         columnModel.getColumn(2).setPreferredWidth(20);
         columnModel.getColumn(1).setPreferredWidth(50);
         columnModel.getColumn(0).setPreferredWidth(260);
-        TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(table);
-        sintomasTable.setRowSorter(sorTable);
-        scrollPane = new JScrollPane(sintomasTable);
-        this.add(scrollPane);
+        TableRowSorter<DefaultTableModel> sorTable = new TableRowSorter<>(defaultTableModel);
+        sintomasT.setRowSorter(sorTable);
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sorTable.setSortKeys(sortKeys);
+        return sintomasT;
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        this.setBounds(10, 120, 500, 420);
         scrollPane.setBounds(0,0, 480, 400);
-        limpiar();
-        llenarTabla();
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
     private void addCheckBox(int column, JTable table) {
         TableColumn tc = table.getColumnModel().getColumn(column);
@@ -72,12 +90,6 @@ public class RegistrarSintomasJPanel extends JPanel {
     private void llenarTabla(){
         for (Sintoma sintoma : sintomas) {
             table.addRow(new Object[]{sintoma, sintoma.getClass().getName().split("\\.")[1]});
-        }
-    }
-    private void limpiar(){
-        int rowCount = table.getRowCount();
-        for (int i = rowCount - 1; i >= 0; i--) {
-            table.removeRow(i);
         }
     }
 }
