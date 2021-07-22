@@ -7,7 +7,7 @@ import monitor.Sintomas;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Date;
@@ -23,6 +23,7 @@ public class RegistrosTablaJPanel extends JPanel {
     private final JPanel sintomasRegistradosJPanel;
     private final JLabel registrosText;
     private final JTable registrosTable;
+
     public RegistrosTablaJPanel(Registros registros) {
         this.registros = registros;
         sintomasRegistradosJPanel = new JPanel();
@@ -41,14 +42,14 @@ public class RegistrosTablaJPanel extends JPanel {
         llenarTabla();
     }
 
-    private void agregarComponentes(){
+    private void agregarComponentes() {
         sintomasRegistradosJPanel.add(fechasJScrollPanel);
         sintomasRegistradosJPanel.add(sintomasTablaJPanel);
         this.add(sintomasRegistradosJPanel);
         this.add(registrosText);
     }
 
-    private JTable registrosTableOrdenado(DefaultTableModel defaultTableModel){
+    private JTable registrosTableOrdenado(DefaultTableModel defaultTableModel) {
         JTable registrosT = new JTable(defaultTableModel);
         registrosT.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {

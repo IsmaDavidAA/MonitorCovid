@@ -1,13 +1,15 @@
 package cargarregistros.gui;
 
 import monitor.Sintomas;
-import javax.swing.*;
-import java.awt.*;
+
+import javax.swing.JFrame;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class RegistrarRegistroGUI extends JFrame {
     private final RegistrosJPanel registrosJPanelLabel;
+
     public RegistrarRegistroGUI(Sintomas sintomas) {
         this.setLocation(200, 50);
         this.setPreferredSize(new Dimension(1000, 620));
@@ -21,34 +23,33 @@ public class RegistrarRegistroGUI extends JFrame {
         sincronizar();
     }
 
-    private void sincronizar(){
-        synchronized(this){
-            try{
+    private void sincronizar() {
+        synchronized (this) {
+            try {
                 this.wait();
-            }
-            catch(InterruptedException ex){
-                //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void finalizar(){
-        this.addWindowListener(new WindowAdapter(){
+    private void finalizar() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent we){
+            public void windowClosing(WindowEvent we) {
                 closeWindow();
             }
         });
     }
 
-    private void closeWindow(){
+    private void closeWindow() {
         try {
-            synchronized(this){
+            synchronized (this) {
                 this.notify();
             }
             this.dispose();
-        } catch (Exception e){
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

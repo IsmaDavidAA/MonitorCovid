@@ -5,7 +5,7 @@ import monitor.Registro;
 import monitor.Sintomas;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -80,7 +80,7 @@ public class RegistrosJPanel extends JPanel implements ActionListener {
             }
             registrarRegistroGUI.dispose();
         } catch (Exception e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         }
     }
 

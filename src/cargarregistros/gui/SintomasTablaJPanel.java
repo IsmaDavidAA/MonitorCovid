@@ -2,11 +2,12 @@ package cargarregistros.gui;
 
 import monitor.Sintoma;
 import monitor.Sintomas;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class SintomasTablaJPanel extends JPanel {
     private final JTable sintomasJTable;
     private final JScrollPane scrollPane;
     private final DefaultTableModel table;
+
     public SintomasTablaJPanel() {
         table = new DefaultTableModel();
         table.addColumn("Historial de sintomas");
@@ -33,18 +35,21 @@ public class SintomasTablaJPanel extends JPanel {
         scrollPane = new JScrollPane(sintomasJTable);
         this.add(scrollPane);
     }
-    public void paintComponent(Graphics g){
+
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        scrollPane.setBounds(0, 0, 420,230);
+        scrollPane.setBounds(0, 0, 420, 230);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
+
     public void actualizar(Sintomas sintomas) {
         limpiar();
-        for (Sintoma sintoma: sintomas){
+        for (Sintoma sintoma : sintomas) {
             table.addRow(new String[]{sintoma.toString(), sintoma.getClass().getName().split("\\.")[1]});
         }
     }
-    private void limpiar(){
+
+    private void limpiar() {
         int rowCount = table.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {
             table.removeRow(i);

@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,8 +82,8 @@ public class RegistrarSintomasJPanel extends JPanel {
                 existenSintomas = true;
             }
         }
-        if(!existenSintomas){
-            sintomasParaGuardar=null;
+        if (!existenSintomas) {
+            sintomasParaGuardar = null;
         }
         return sintomasParaGuardar;
     }
