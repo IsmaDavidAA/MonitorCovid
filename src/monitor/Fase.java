@@ -1,7 +1,6 @@
 package monitor;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Fase implements Serializable {

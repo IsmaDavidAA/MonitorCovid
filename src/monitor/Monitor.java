@@ -29,16 +29,16 @@ public class Monitor {
         mostrarDiaFase(resultadoDiagnostico);
     }
 
-    private void mostrarDiaFase(int resultadoDiagnostico){
+    private void mostrarDiaFase(int resultadoDiagnostico) {
         fase = (new DatosFase()).leerDatosFase();
         Recomendador recomendador;
-        if(resultadoDiagnostico == 3) {
+        if (resultadoDiagnostico == 3) {
             Fase faseN = new Fase("PrimeraFase", 3);
             faseN.setDia(3);
             recomendador = new Recomendador(faseN);
             fase = new Fase("SegundaFase", 4);
             (new DatosFase()).guardarDatosFase(fase);
-        }else{
+        } else {
             recomendador = new Recomendador(fase);
         }
         System.out.println(recomendador.recomendacion());

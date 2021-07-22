@@ -4,12 +4,13 @@ import monitor.Sintoma;
 import monitor.Sintomas;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ContadorSintomas {
 
 
-    public HashMap<String, Integer> sacarTotalPorFase(Sintomas sintomas){
-        HashMap<String, Integer> totalPorFases = new HashMap<String, Integer>();
+    public Map<String, Integer> sacarTotalPorFase(Sintomas sintomas){
+        HashMap<String, Integer> totalPorFases = new HashMap<>();
         for (Sintoma s: sintomas) {
             String nombreClass = s.getClass().getName();
             nombreClass = nombreClass.substring(nombreClass.indexOf(".")+1);
