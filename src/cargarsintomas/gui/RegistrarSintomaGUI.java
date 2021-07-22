@@ -1,10 +1,12 @@
 package cargarsintomas.gui;
-import javax.swing.*;
-import java.awt.*;
+
+import javax.swing.JFrame;
+import java.awt.Dimension;
 import java.awt.event.*;
 
-public class RegistrarSintomaGUI extends JFrame{
+public class RegistrarSintomaGUI extends JFrame {
     private final SintomasJPanel sintomasJPanel;
+
     public RegistrarSintomaGUI() {
         this.setLocation(200, 50);
         this.setPreferredSize(new Dimension(520, 640));
@@ -18,33 +20,33 @@ public class RegistrarSintomaGUI extends JFrame{
         sincronizar();
     }
 
-    private void sincronizar(){
-        synchronized(this){
-            try{
+    private void sincronizar() {
+        synchronized (this) {
+            try {
                 this.wait();
-            } catch(InterruptedException ex){
-                //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void finalizar(){
-        this.addWindowListener(new WindowAdapter(){
+    private void finalizar() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent we){
+            public void windowClosing(WindowEvent we) {
                 closeWindow();
             }
         });
     }
 
-    private void closeWindow(){
+    private void closeWindow() {
         try {
-            synchronized(this){
+            synchronized (this) {
                 this.notify();
             }
             this.dispose();
-        } catch (Exception e){
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

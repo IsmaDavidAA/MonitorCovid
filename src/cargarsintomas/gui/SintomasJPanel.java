@@ -5,7 +5,7 @@ import cargarsintomas.util.GestorPaquete;
 import cargarsintomas.util.Validador;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -61,7 +61,7 @@ public class SintomasJPanel extends JPanel implements ActionListener{
             }
             registrarSintomasFrame.dispose();
         } catch (Exception e){
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         }
     }
 

@@ -17,11 +17,7 @@ public class CargarRegistros {
     }
 
     private void cargarSintoma() {
-        try {
-            registrarRegistroGUI = new RegistrarRegistroGUI(sintomas);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        registrarRegistroGUI = new RegistrarRegistroGUI(sintomas);
     }
 
     public Registros getRegistros() {

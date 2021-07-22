@@ -2,6 +2,7 @@ package cargarsintomas.util;
 
 import monitor.Sintoma;
 import monitor.Sintomas;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -9,42 +10,45 @@ import java.lang.reflect.InvocationTargetException;
 public class GestorArchivoSintomas {
     private static final String ARCHIVO_SINTOMAS = "./IsmaSintomas.dat";
     private static final String PAQUETE = "sintomas";
-    public GestorArchivoSintomas(){
+
+    public GestorArchivoSintomas() {
         verificarExistenciaArchivo();
     }
-    private void verificarExistenciaArchivo(){
+
+    private void verificarExistenciaArchivo() {
         File fileSintomas = new File(ARCHIVO_SINTOMAS);
-        if(!fileSintomas.exists()){
+        if (!fileSintomas.exists()) {
             try {
                 fileSintomas.createNewFile();
             } catch (IOException e) {
-                //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+                e.printStackTrace();
             }
         }
     }
-    public Sintoma crearSintoma(String nombreSintoma, String tipo){
+
+    public Sintoma crearSintoma(String nombreSintoma, String tipo) {
         Class<?> cl;
-        Sintoma sintoma=null;
+        Sintoma sintoma = null;
         try {
             cl = Class.forName(PAQUETE + "." + tipo);
             Constructor<?> constructor = cl.getConstructor(String.class);
             sintoma = (Sintoma) (constructor.newInstance(new Object[]{nombreSintoma}));
         } catch (ClassNotFoundException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         } catch (NoSuchMethodException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         } catch (InstantiationException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         } catch (InvocationTargetException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         }
         return sintoma;
     }
 
     public boolean guardarSintoma(String nombreSintoma, String tipo) {
-        boolean guardado=false;
+        boolean guardado = false;
         Sintoma sintoma;
         Sintomas sintomas = getSintomasArchivo();
         ObjectOutputStream file;
@@ -56,11 +60,12 @@ public class GestorArchivoSintomas {
             file.close();
             guardado = true;
         } catch (IOException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         }
         return guardado;
     }
-    public Sintomas getSintomasArchivo(){
+
+    public Sintomas getSintomasArchivo() {
         Sintomas sintomas = new Sintomas();
         ObjectInputStream file;
         try {
@@ -68,11 +73,11 @@ public class GestorArchivoSintomas {
             sintomas = (Sintomas) file.readObject();
             file.close();
         } catch (FileNotFoundException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         } catch (IOException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
         }
         return sintomas;
     }

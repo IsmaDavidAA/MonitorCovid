@@ -13,7 +13,8 @@ import java.util.zip.ZipInputStream;
 public class GestorPaquete {
     private static final String NOMBRE_PAQUETE = "sintomas";
     private static final String NOMBRE_JAR = "home.jar";
-    public List<String> getTiposDeSintomas()  {
+
+    public List<String> getTiposDeSintomas() {
         List<String> listaClasesPaquete = new ArrayList<>();
         File[] classes = this.archivosPaquete(NOMBRE_PAQUETE);
         if (classes == null) {
@@ -21,24 +22,24 @@ public class GestorPaquete {
                 ZipInputStream zip = new ZipInputStream(new FileInputStream(NOMBRE_JAR));
                 for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
                     if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
-                        String className = entry.getName().replace('/', '.'); // including ".class"
-                        if(className.split("\\.")[0].equals(NOMBRE_PAQUETE)) {
+                        String className = entry.getName().replace('/', '.');
+                        if (className.split("\\.")[0].equals(NOMBRE_PAQUETE)) {
                             listaClasesPaquete.add(className.split("\\.")[1]);
                         }
                     }
                 }
-            } catch ( IOException e) {
-                //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else {
             Class<Sintoma> sintomaClass = Sintoma.class;
-            for (File clase: classes){
+            for (File clase : classes) {
                 try {
                     String nombreClase = clase.getName().split("\\.")[0];
-                    Class.forName(NOMBRE_PAQUETE+"."+nombreClase).asSubclass(sintomaClass);
+                    Class.forName(NOMBRE_PAQUETE + "." + nombreClase).asSubclass(sintomaClass);
                     listaClasesPaquete.add(nombreClase);
-                } catch ( ClassNotFoundException e) {
-                    //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -57,9 +58,9 @@ public class GestorPaquete {
             }
             archivos = dir.listFiles();
         } catch (IOException e) {
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
-        } catch (NullPointerException e){
-            //TRATAMIENTO DE EXCEPCIONES-------------------------------------------------------------------------
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         return archivos;
     }

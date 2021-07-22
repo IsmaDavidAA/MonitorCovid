@@ -5,16 +5,16 @@ import monitor.Sintomas;
 
 public class Validador {
 
-    public boolean esValido(String texto, Sintomas sintomas){
+    public boolean esValido(String texto, Sintomas sintomas) {
         boolean valido = true;
-        texto = texto.replaceAll(" ","");
+        texto = texto.replaceAll(" ", "");
         texto = texto.toUpperCase();
 
-        if(!tieneSoloLetras(texto) || texto.length() < 3){
+        if (!tieneSoloLetras(texto) || texto.length() < 3) {
             valido = false;
-        }else{
-            for (Sintoma nombreTexto: sintomas) {
-                if(nombreTexto.toString().replaceAll(" ", "").equals(texto)){
+        } else {
+            for (Sintoma nombreTexto : sintomas) {
+                if (nombreTexto.toString().replaceAll(" ", "").equals(texto)) {
                     valido = false;
                 }
             }
@@ -22,7 +22,7 @@ public class Validador {
         return valido;
     }
 
-    public String getTextoValidado(String nombreSintoma){
+    public String getTextoValidado(String nombreSintoma) {
         String nombreSintomaValidado = nombreSintoma.toUpperCase();
         nombreSintomaValidado = nombreSintomaValidado.replaceAll("^\\p{Zs}+|\\p{Zs}+$", "");
         return nombreSintomaValidado;
@@ -30,9 +30,9 @@ public class Validador {
 
     private boolean tieneSoloLetras(String cadena) {
         boolean tieneSoloLetras = true;
-        int i=0;
+        int i = 0;
         char c;
-        while(tieneSoloLetras && i <cadena.length()){
+        while (tieneSoloLetras && i < cadena.length()) {
             c = cadena.charAt(i);
             if (!((c >= 'A' && c <= 'Z') || c == ' ')) {
                 tieneSoloLetras = false;

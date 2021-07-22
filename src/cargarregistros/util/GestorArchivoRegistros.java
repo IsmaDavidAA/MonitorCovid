@@ -13,10 +13,10 @@ public class GestorArchivoRegistros {
     }
 
     public void verificarExistenciaArchivo() {
-        File fileSintomas = new File(ARCHIVO_REGISTROS);
-        if (!fileSintomas.exists()) {
+        File fileRegistros = new File(ARCHIVO_REGISTROS);
+        if (!fileRegistros.exists()) {
             try {
-                fileSintomas.createNewFile();
+                fileRegistros.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }

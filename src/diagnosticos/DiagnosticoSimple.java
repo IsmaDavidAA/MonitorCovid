@@ -1,23 +1,23 @@
 package diagnosticos;
 
-        import monitor.FuncionDiagnostico;
-        import monitor.Registro;
-        import monitor.Registros;
-        import monitor.Sintoma;
-        import monitor.Sintomas;
+import monitor.FuncionDiagnostico;
+import monitor.Registro;
+import monitor.Registros;
+import monitor.Sintoma;
+import monitor.Sintomas;
 
-        import java.util.HashMap;
-        import java.util.Map;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DiagnosticoSimple extends FuncionDiagnostico {
 
-    private Map<Sintoma,Integer> pesos;
+    private Map<Sintoma, Integer> pesos;
 
     public DiagnosticoSimple(Sintomas ls) {
         super(ls);
         pesos = new HashMap<>();
-        for (Sintoma s: ls) {
-            pesos.put(s,s.peso());
+        for (Sintoma s : ls) {
+            pesos.put(s, s.peso());
         }
     }
 
@@ -27,7 +27,7 @@ public class DiagnosticoSimple extends FuncionDiagnostico {
         if (!registros.isEmpty()) {
             Registro registro = registros.peek();
             Sintomas sintomas = registro.getSintomas();
-            for (Sintoma s: sintomas) {
+            for (Sintoma s : sintomas) {
                 pesoSintomas += pesos.get(s);
             }
         }
